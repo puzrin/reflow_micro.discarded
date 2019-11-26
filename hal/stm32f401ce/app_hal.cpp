@@ -8,6 +8,7 @@
 #include "spi.h"
 #include "tim.h"
 #include "usb_otg.h"
+#include "usart.h"
 
 extern "C" void SystemClock_Config(void);
 
@@ -19,7 +20,7 @@ void setup() {
 
     // Attach display buffer and display driver
     static lv_disp_buf_t disp_buf;
-    static lv_color_t buf[LV_HOR_RES_MAX * 10];
+    static lv_color_t buf[LV_HOR_RES_MAX * 50];
     lv_disp_buf_init(&disp_buf, buf, NULL, LV_HOR_RES_MAX * 10);
 
     lv_disp_drv_t disp_drv;
@@ -42,8 +43,9 @@ void setup() {
     MX_ADC1_Init();
     MX_TIM2_Init();
     MX_TIM4_Init();
-    MX_TIM11_Init();
     MX_USB_OTG_FS_PCD_Init();
+    MX_TIM11_Init();
+    MX_USART1_UART_Init();
 }
 
 //

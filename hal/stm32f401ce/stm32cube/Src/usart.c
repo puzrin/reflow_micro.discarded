@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * File Name          : ADC.c
+  * File Name          : USART.c
   * Description        : This file provides code for the configuration
-  *                      of the ADC instances.
+  *                      of the USART instances.
   ******************************************************************************
   ** This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
@@ -38,99 +38,84 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
-#include "adc.h"
+#include "usart.h"
 
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
 
-ADC_HandleTypeDef hadc1;
+UART_HandleTypeDef huart1;
 
-/* ADC1 init function */
-void MX_ADC1_Init(void)
+/* USART1 init function */
+
+void MX_USART1_UART_Init(void)
 {
-  ADC_ChannelConfTypeDef sConfig = {0};
 
-  /**Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) 
-  */
-  hadc1.Instance = ADC1;
-  hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
-  hadc1.Init.Resolution = ADC_RESOLUTION_12B;
-  hadc1.Init.ScanConvMode = DISABLE;
-  hadc1.Init.ContinuousConvMode = DISABLE;
-  hadc1.Init.DiscontinuousConvMode = DISABLE;
-  hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-  hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
-  hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 1;
-  hadc1.Init.DMAContinuousRequests = DISABLE;
-  hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
-  if (HAL_ADC_Init(&hadc1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /**Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. 
-  */
-  sConfig.Channel = ADC_CHANNEL_0;
-  sConfig.Rank = 1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_3CYCLES;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 115200;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
   {
     Error_Handler();
   }
 
 }
 
-void HAL_ADC_MspInit(ADC_HandleTypeDef* adcHandle)
+void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
 {
 
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-  if(adcHandle->Instance==ADC1)
+  if(uartHandle->Instance==USART1)
   {
-  /* USER CODE BEGIN ADC1_MspInit 0 */
+  /* USER CODE BEGIN USART1_MspInit 0 */
 
-  /* USER CODE END ADC1_MspInit 0 */
-    /* ADC1 clock enable */
-    __HAL_RCC_ADC1_CLK_ENABLE();
+  /* USER CODE END USART1_MspInit 0 */
+    /* USART1 clock enable */
+    __HAL_RCC_USART1_CLK_ENABLE();
   
     __HAL_RCC_GPIOA_CLK_ENABLE();
-    /**ADC1 GPIO Configuration    
-    PA0-WKUP     ------> ADC1_IN0
-    PA1     ------> ADC1_IN1
-    PA2     ------> ADC1_IN2 
+    /**USART1 GPIO Configuration    
+    PA9     ------> USART1_TX
+    PA10     ------> USART1_RX 
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2;
-    GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Pin = GPIO_PIN_9|GPIO_PIN_10;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF7_USART1;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /* USER CODE BEGIN ADC1_MspInit 1 */
+  /* USER CODE BEGIN USART1_MspInit 1 */
 
-  /* USER CODE END ADC1_MspInit 1 */
+  /* USER CODE END USART1_MspInit 1 */
   }
 }
 
-void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
+void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 {
 
-  if(adcHandle->Instance==ADC1)
+  if(uartHandle->Instance==USART1)
   {
-  /* USER CODE BEGIN ADC1_MspDeInit 0 */
+  /* USER CODE BEGIN USART1_MspDeInit 0 */
 
-  /* USER CODE END ADC1_MspDeInit 0 */
+  /* USER CODE END USART1_MspDeInit 0 */
     /* Peripheral clock disable */
-    __HAL_RCC_ADC1_CLK_DISABLE();
+    __HAL_RCC_USART1_CLK_DISABLE();
   
-    /**ADC1 GPIO Configuration    
-    PA0-WKUP     ------> ADC1_IN0
-    PA1     ------> ADC1_IN1
-    PA2     ------> ADC1_IN2 
+    /**USART1 GPIO Configuration    
+    PA9     ------> USART1_TX
+    PA10     ------> USART1_RX 
     */
-    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2);
+    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_9|GPIO_PIN_10);
 
-  /* USER CODE BEGIN ADC1_MspDeInit 1 */
+  /* USER CODE BEGIN USART1_MspDeInit 1 */
 
-  /* USER CODE END ADC1_MspDeInit 1 */
+  /* USER CODE END USART1_MspDeInit 1 */
   }
 } 
 
