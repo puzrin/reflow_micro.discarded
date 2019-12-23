@@ -3,8 +3,4 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
-hal/stm32f401ce/stm32cubemx/.mxproject
-hal/stm32f401ce/stm32cubemx/Makefile
-hal/stm32f401ce/stm32cubemx/startup_stm32f401xe.s
-hal/stm32f401ce/stm32cubemx/STM32F401CEUx_FLASH.ld
 .vscode/settings.json
