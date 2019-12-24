@@ -4,7 +4,7 @@
 #include "indev/mouse.h"
 
 #include "app_hal.h"
-#include "app.h"
+#include "app_gui.h"
 
 namespace hal {
 

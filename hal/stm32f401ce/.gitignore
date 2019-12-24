@@ -1,4 +1,0 @@
-stm32cube/.mxproject
-stm32cube/Makefile
-stm32cube/*.s
-stm32cube/*.ld
