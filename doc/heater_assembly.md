@@ -2,225 +2,115 @@ Heater assembly <!-- omit in toc -->
 ===============
 
 - [Intro](#intro)
-- [Make copper plate of required size](#make-copper-plate-of-required-size)
-- [PCB Mount holes](#pcb-mount-holes)
-- [MCH mount holes](#mch-mount-holes)
-- [Cones for flat cap screws](#cones-for-flat-cap-screws)
-- [Sanding](#sanding)
-- [Half-shims for MCH](#half-shims-for-mch)
-- [Test assembly](#test-assembly)
+- [Drilling conductor](#drilling-conductor)
+- [Drill plate](#drill-plate)
+- [Half-shims for MCH mount](#half-shims-for-mch-mount)
 - [Painting](#painting)
-- [Paint baking](#paint-baking)
 - [MCH pads insulation](#mch-pads-insulation)
 - [Final assembly](#final-assembly)
 
 ## Intro
 
-There are 2 possible types of heaters:
+Everything is designed with accessible materials. But we strongly recommend you
+consider [mini circular saw tables](https://www.aliexpress.com/item/32845187139.html)
+for easy aluminum cut. Of cause, you can cut it by hand saw, if you are patient.
 
-- MCH-based, with copper top plate.
-- Aluminum heater cartridge.
-
-Copper has better thermal conductivity and better response. In real world this means:
-
-- More uniform surface temperature.
-- More easy to cool down (we need 4C/sec cooldown speed on reflow end).
-- More flexible configurations (AC 110/220) and higher max temperatures
-
-As perfectionists, we recommend "copper" heater. But as realists, we don't like
-to reduce project availability and have "Plan B" - aluminum heater.
-
-"Mission" of this project is to make modern electronics easy to do by
-hobbyists. That means, everything should be possible to do at home, with
-electric screwdriver & 3D-printer only, without machine-tools. From this
-point of view, need of circular saw table is a serious disadvantage. But there
-are cheap and very small [mini circular saw tables](https://www.aliexpress.com/item/32845187139.html).
-Those will be enough for our needs. Only you can make a choice. Our duty is
-to describe possibilities and expenses.
-
-We describe build of both heater types in parallel. Just skip unneeded steps
-for aluminum heater.
-
-Let's go!
+Also, we recommend you build drilling conductor for ideal drill angle and depth.
 
 
-## Make copper plate of required size
+## Drilling conductor
 
-You need 70*60mm copper plate, 2mm thick. Cut it at circular saw. If you use
-mini table and have no experience, you should know:
+That's not mandatory, but simplifies making accurate holes for screws:
 
-- ADD OIL to cut line. That's important.
-- Fewer big teeth are much better for copper/alu than more small teeth.
-  Just use stock 80mm disk with oil.
+![](images/drill_conductor_duo.jpg)
+
+Holes are 1.7mm and 3.1mm (in M6 screws, glued with CA), for appropriate drill bits.
+
+Tips:
+
+1. It's not mandatory to use metal U-profile. Use anything you have,
+   even wood. You can also use [miter track](https://www.aliexpress.com/item/33048246472.html).
+2. To make hole in M6 screw center - put it into screwdriver, and push with
+   drill bit, placed into separate chuck. Philips head is important - no need to
+   search center point.
+3. To simplify drilling:
+    - Use the worst possible screws :). Avoid stainless steel and tempered steel.
+    - Add oil to drilled point. If you don't have special one - olive oil will be
+      ok.
+    - HSS Co (M35, M42) drill bits are more comfortable for steel, instead of
+      ordinary HSS. It's also good idea to have reserve drill bits.
+4. You may need additional spacer for 3.1mm hole. Drill 2 screws.
+
+After conductor ready, use it to make test holes on unused peace of metal.
+Drill 1.7mm hole and then drill 3.1mm cone down until screw sits as needed.
+Later, use this to set exact drill bit height in chuck.
+
+
+## Drill plate
+
+You need 70*60mm plate, 2-3mm thick. Cut it with circular or hand saw. If you
+use [mini table saw](https://www.aliexpress.com/item/32845187139.html) and have
+no experience, you should know:
+
+- No need to buy separate saw disc for metal, stock one is ok.
+- ADD OIL to cut area. That's important.
 - Train first :). Do couple of test cuts.
 
+Stick plate to PCB with sticky tape, and drill holes to mount MCH and plate
+itself. Then, set exact drill bit height from previous test samples, and make
+cones for screw caps.
 
-## PCB Mount holes
+After all - sand plate to remove artefacts and improve painting quality.
 
-Stick copper plate (or alu heater) to PCB with sticky tape, and use PCB as
-conductor to drill 1.6mm holes.
+![](images/plate_drilled_3mm.jpg)
 
-Note, copper is very inconvenient to drill. Use medium RPM and push gently.
-If electric drill starts to vibrate - increase RPM until acceptable. Advices:
-
-- HSS Co (M35) drill bits recommended. Those tend to forgive you mistakes,
-  if you select too high RPM.
-- Train first! Try to drill unused peace of copper plate to understand process.
-- You should have 1-2 reserve 1.6mm drill bits for replace.
-- Be patient, don't push too hard.
+If you have orbital sander - use it. Manual sanding is ok to, but takes more
+time.
 
 
-## MCH mount holes
+## Half-shims for MCH mount
 
-Process is similar to above. Stick MCH to copper plate:
+MCH is mounted to plate by edges. We need supports from another side of screws
+to avoid skew. Those can be done from any pease of 1.5-2.0mm metal.
 
-![](images/copper_with_mch_50.jpg)
-
-You need 4 holes as close as possible to MCH heater. Position drill bit to touch
-MCH, with 5mm margin from corner, and drill.
-
-
-## Cones for flat cap screws
-
-Now you need to drill cones for flat caps screw. We need conductor to make those
-the same and accurate. May be you will be lucky without conductor for
-aluminum heater, but that's impossible for copper. Seriously, no chance
-to drill nice cones "by hand" in copper, and very high probability to break
-drill bit.
-
-Note: this can be done on good drill stand, but our goal is to explain how to
-succeed "at home".
-
-Another problem is, we need cones with 3mm outer dia. There are no countersink
-drill bits of such small size. So, we use 3mm chamfer milling cutter from CNC.
-More expensive, but no alternative.
-
-Let's do conductor first:
-
-![](images/chamfering_mill_conductor.jpg)
-
-It's a U-arc with gear for 3mm shaft. Assembled with any glue (CA will be ok
-too). U-arc can be done anyhow - a peace of U-profile, 2 peaces of L-profile or
-even wood. You can also use [miter track](https://www.aliexpress.com/item/33048246472.html).
-
-Optimal sizes are:
-
-- 5-10mm of bottom space, to see hole and drill bit.
-- 20-40mm width
-- 150mm length
-
-How to use:
-
-1. Do "test" hole and cone "by hand", until satisfied with result. Check how
-   screw fit in it.
-2. Place conductor over it. Insert drill bit and make screwdriver chuck touch
-   conductor. Now you can "clone" cones as much as you need.
-3. Take conductor with plate in one hand, drill into another hand, and drill.
-   This will help to "feel" process, and exclude unintended skew of screwdriver.
-
-Result:
-
-![](images/plates_drilled.jpg)
-
-
-## Sanding
-
-Sanding is mandatory for copper plates and recommended for aluminum heater.
-Reasons are:
-
-1. Remove artifacts after drilling.
-2. Round sharp edges.
-3. Prepare surface for painting.
-
-There are to need to polish surface to mirror state. Just sand until you like
-result, by hand or with orbital sander.
-
-![](images/plates_sanded.jpg)
-
-Note, copper plates are usually straight, but aluminum heater is usually not.
-Sanding copper plate is fast, but sanding aliminum can take some time to
-make it straight and nice.
-
-
-## Half-shims for MCH
-
-MCH is mounted to copper plate by edges. We need supports from another side of
-screws to avoid skew. Let's do those from existing peace of copper plate.
-
-Drill a series of 2mm holes with step 7mm and margin 3mm from border. Then, at
+Drill a series of 2mm holes with step 5mm and margin 3mm from border. Then, at
 circular saw, cut the line and split to peaces:
 
 ![](images/mch_half_shims.jpg)
 
-Precision is not critical. Just do as you can :).
-
-Note. MCH 50\*50mm has height exactly 2.0mm, as copper sheet. MCH 40\*40mm has
-~1.7mm height - you may need to sand shim height a bit.
-
-
-## Test assembly
-
-Now worth make a partial test assembly, to check everything is ok and straight:
-
-![](images/plates_test_assembly.jpg)
-
+Precision is not critical. Just do as you can :). You can also make half-shims
+manually.
 
 
 ## Painting
 
-It's very critical to cover heater top with [high temperature black paint](https://www.google.com/search?q=high+temperature+paint), to
+It's very inportant to cover heater top with [high temperature black paint](https://www.google.com/search?q=high+temperature+paint), to
 increase IR emission. Difference between painted and unpainted surface is HUGE.
 
-We can not give you exact link, but such paints should be widely available in
+We can not give you exact links, but such paints should be widely available in
 your local shops. They are used to protect barbecues, car exhaust systems,
-furnaces, ovens and so on. Just buy the most cheap, able to work at 400C, in
-aerosol pack.
+furnaces, ovens and so on. Those paints need baking at 200-250C as final step.
 
-- With very high probability, paint will need "baking" at 150-200C (not a
-  problem, you can use heater itself to heat). Some paints don't need baking,
-  but need 72Hours to full dry. Don't wait for miracle, there are no "5 min high
-  temperature paint".
-- Prefer paint which is more easy to use (fast dry, small pause between layers).
-  Don't select by  max temperature (1000C and more), 400C is enough. Select by
-  usage simplicity.
-- As always... train first, if you have no practice at all!
+IMPORTANT. READ PAINTING PROCESS INSTRUCTION ON AEROSOL. THAT'S IMPORTANT FOR
+GOOD RESULT.
 
-READ PAINTING PROCESS INSTRUCTION ON AEROSOL. THAT'S IMPORTANT FOR GOOD RESULT.
-Painting is not difficult, but broken process will cause poor coating quality.
-
-We stick plates to A4 paper, to hold it in one hand, and spray paint by another
-hand. 2 thin layers are enough. To pin plate, place paper sticky tape from
-bottom side to cover all edges, with bounding margins. Then put that on A4 sheet
-and stick again by margins.
-
-After paint:
+You can stick plates with sticky tape to A4 paper. Then to hold it in one hand
+and apply aerosol paint by another hand. 2 thin layers are enough.
 
 ![](images/plates_painted.jpg)
 
-Then leave it to dry according to instruction, before bake.
+After paint dries - bake it, according to instructions. If you wish to keep
+kitchen oven clean, try [cheap heater](https://www.aliexpress.com/item/32997139401.html)
+with light dimmer.
 
+Notes:
 
-## Paint baking
+- First time, paint smokes, that's normal.
+- If you have no baking instruction - heat to 100C, then slowly (~ 5C/min)
+  to 250C. And keep at max temp 1-2 hours.
+- Don't touch paint while bake. It becomes very tender at start.
 
-Most of high temperature paints require baking to became solid. Before that
-those are soft and subject to scratches.
-
-To bake aluminum heater - insert mounting screws and use those as trotters. Then
-power via dimmer to set proper temperature. To bake copper plate - use aluminum
-heater (it's cheap).
-
-Exact baking process should be taken from manual. If it's not available - heat
-at 120C until iit stops smoke, then heat at 200C several hours. To determine
-end of process - use testing peace of metal, and touch it with something sharp,
-to check if paint is solid or not. Preliminary estimate is 3-12 hours.
-
-
-TBD [image]
-
-As you can see, copper plate back side become oxydized. That's not a problem
-in general - if you don't scratch oxidized film it will stay and stop process.
-But for ideal result you may wish to sand back surface and use high temperature
-thermal conductive paste on MCH to exclude any air access.
+After baking done - sand border sides, those should not emit heat.
 
 
 ## MCH pads insulation
@@ -232,13 +122,10 @@ First, move wire coating "inside" ceramic body:
 
 ![](images/mch_pads.jpg)
 
-Now top side is safe enough. To protect bottom side, fill contacts and nearby
-area with silicon gasket maker. Then wait 1 day to dry.
+Then add 2 peaces of kapton (polyimide) tape to close pads. And from another
+side, to close sticky layer and hold wire insulation.
 
 ![](images/mch_insulated.jpg)
-
-For sure you may add a peace of kapton (polyimide) tape (but that's not
-necessary).
 
 
 ## Final assembly
