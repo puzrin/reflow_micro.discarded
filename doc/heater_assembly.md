@@ -7,7 +7,8 @@ Heater assembly <!-- omit in toc -->
 - [Half-shims for MCH mount](#half-shims-for-mch-mount)
 - [Painting](#painting)
 - [MCH pads insulation](#mch-pads-insulation)
-- [Final assembly](#final-assembly)
+- [Full assembly](#full-assembly)
+- [Mount on PCB](#mount-on-pcb)
 
 ## Intro
 
@@ -48,9 +49,9 @@ Later, use this to set exact drill bit height in chuck.
 
 ## Drill plate
 
-You need 70*60mm plate, 2-3mm thick. Cut it with circular or hand saw. If you
-use [mini table saw](https://www.aliexpress.com/item/32845187139.html) and have
-no experience, you should know:
+You need 70*60mm plate, 4mm thick. 3mm thick posible, but not recommended. Cut
+it with circular or hand saw. If you use [mini table saw](https://www.aliexpress.com/item/32845187139.html)
+and have no experience, you should know:
 
 - No need to buy separate saw disc for metal, stock one is ok.
 - ADD OIL to cut area. That's important.
@@ -60,9 +61,12 @@ Stick plate to PCB with sticky tape, and drill holes to mount MCH and plate
 itself. Then, set exact drill bit height from previous test samples, and make
 cones for screw caps.
 
+Note: make outer cones 1mm deeper than inner cones, to leave enougth room
+between heater and PCB.
+
 After all - sand plate to remove artefacts and improve painting quality.
 
-![](images/plate_drilled_3mm.jpg)
+![](images/plate_drilled_4mm.jpg)
 
 If you have orbital sander - use it. Manual sanding is ok to, but takes more
 time.
@@ -110,6 +114,8 @@ Notes:
   to 250C. And keep at max temp 1-2 hours.
 - Don't touch paint while bake. It becomes very tender at start.
 
+![](images/plate_baked_4mm.jpg)
+
 After baking done - sand border sides, those should not emit heat.
 
 
@@ -128,22 +134,42 @@ side, to close sticky layer and hold wire insulation.
 ![](images/mch_insulated.jpg)
 
 
-## Final assembly
+## Full assembly
 
-Cut peace of aluminum foil with 1cm reserve at every edge. You need fat foil,
-0.05mm (50um). Such foil is used for sauna thermal insulation, and available
+Here is how heater looks under foil:
+
+![](images/heater_inside.jpg)
+
+You need a peace of aluminum foil with 1cm reserve at every edge. It shouls be
+fat, 0.05mm (50um). Such foil is used for sauna thermal insulation, and available
 in appropriate stores. If you can's find it - try foil from food baking forms
 (straighten it with something round if needed).
 
-Use copper plate to drill 4 inner holes in foil. Then apply thin layer of
-thermal conductive paste and stick MCH to plate from one side with paper tape.
-Assemble 2 MCH mounting screws, remove tape and assemble 2 other screws.
+Apply thermal conductive paste to plate, put heater to it's place and stick it temporary with sticky tape. Note, paste should be ok at high temperature. For
+example - Thermal Grizzly Kryonaut.
 
-After MCH mounted, gently push foil copper plate. Then make 4 holes for long
-screws and install those.
+Cut peace with 1cm reserve from each side and drill inner screw holed with
+conductor. Screw it from one side, insert half-huts with tweezers and tighten
+the screws. Then remove sticky tape and install 2 other screws in similar way.
 
-![](images/plate_assembled.jpg)
+After 4 inner screws assembled, smooth the foil, drill corner holes and install
+long corner screws:
 
-Now heater is ready to use. If you wish, you can glue foil border with gasket
-maker, for better look - set very small points and compress with amy clip for
-couple of hours. Then wait 1 day to dry.
+![](images/heater_assembled.jpg)
+
+Don't forget to use spring washers everywhere. That's important to compensate
+metal parts size change on heating and cooling.
+
+## Mount on PCB
+
+PCB should have additional reflective layer to stay cold. That's done with fat
+aluminum sticky tape (0.05-0.1mm). It also help to spread heat from screws.
+
+Cover PCB with aluminium tape under heater, with 1cm outer margin. Then clean
+everything with IPA and mount assembled heater. Space between aluminium plate
+and PCB should be ~13mm. Here is how it looks on standalone peace of PCB:
+
+![](image/../images/heater_on_pcb.jpg)
+
+If everything is done right, heater can work unlimited time at 270C while
+keeping PCB almost cold.
