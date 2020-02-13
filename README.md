@@ -6,15 +6,23 @@ Reflow Micro Table
 
 **WIP**
 
-> Simple to build & compact table for hobby reflow assembly.
+> Simple to build & compact table for hobby projects reflow assembly.
 
-Schematic & PCB:
+This tool helps to build modern and complicated electronic devices at home.
+It's very small, and ideally suits for hobbyists, who assemble PCBs from time to
+time an don't wish to keep big reflowers from microwave ovens.
 
-- [EasyEDA project page](https://easyeda.com/reflow/reflow-micro-table) - order
-  PCB and all components in couple of clicks.
+Working area is up to 70\*60mm. That's enougth for almost all hobby PCBs with
+SMD components.
 
-Project page on [hackaday.io](https://hackaday.io/project/168063-reflow-micro-table).
-See progress and other tips in build logs.
+- [EasyEDA project page](https://easyeda.com/reflow/reflow-micro-table) -
+  Schematic & PCB. Order everything in couple of clicks.
+- [Thingiverse page](https://www.thingiverse.com/thing:4165226) - Case drafts
+  for 3d-printer.
+
+Also see project page on [hackaday.io](https://hackaday.io/project/168063-reflow-micro-table).
+Until WIP, it tracks progress and has useful tips in build logs.
+
 
 ## Build & usage
 
