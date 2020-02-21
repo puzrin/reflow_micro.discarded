@@ -1,1 +1,1 @@
-#include "etl/profiles/etl_profile.h"
+#define ETL_AUTO_DETERMINE_COMPILER_INFO
