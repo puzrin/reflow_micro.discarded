@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "scripts": {
+    "build:fonts": "./support/build_fonts.js nocompress"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "lv_font_conv": "^0.4.2",
+    "roboto-fontface": "^0.10.0"
+  }
+}
