@@ -2,6 +2,7 @@
 #include "app_hal.h"
 
 #include "main.h"
+#include "i2c.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
@@ -18,9 +19,10 @@ void setup() {
     MX_GPIO_Init();
     MX_SPI1_Init();
     MX_SPI2_Init();
-    MX_TIM4_Init();
     MX_SPI3_Init();
     MX_USART1_UART_Init();
+    MX_I2C1_Init();
+    MX_TIM5_Init();
 
     // Attach display buffer and display driver
     static lv_disp_buf_t disp_buf;

@@ -1,6 +1,9 @@
 #include "app_hal.h"
 #include "lvgl.h"
 
+#include "fonts_custom.h"
+
+
 int main () {
     lv_init();
     hal::setup();
