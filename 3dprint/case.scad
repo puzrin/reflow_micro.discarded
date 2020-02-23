@@ -31,7 +31,7 @@ cap1_slot = 7.3;
 cap_inner_h = 18;
 cap_h = cap_inner_h + wall;
 
-cap_display_mounts_shift = 0.2;
+cap_display_mounts_x_shift = -0.2;
 cap_display_wy_space = 0.2;
 cap_display_wx = 51;
 cap_display_wy = pcb_wy - cap_display_wy_space*2;
@@ -45,7 +45,7 @@ cap_display_view_wx = 36.75;
 cap_display_view_wy = 49;
 
 insert_d = 3.5;
-insert_h = 4.2;
+insert_h = 3.2;
 
 latch_z_offset = cap_display_h - 2.0;
 latch_neg_x_offset = 27.5;
@@ -54,15 +54,6 @@ module qfillet(h, r) {
     difference () {
         translate([-e, -e, 0]) cube([r+e, r+e, h]);
         translate([r, r, -e]) cylinder(h+2e, r = r);
-    }
-}
-
-module tray_stand_through(h = 10, w = 8, ih = 5, id = 4.0, idt = 2.0) {
-    difference() {
-        cube_rounded([w, w, h]);
-        translate([0, 0, -e]) cylinder(ih+e, d=id);
-        translate([0, 0, -e]) cylinder(h+2e, d=idt);
-        translate([0, 0, ih-e]) cylinder(id/2+2e, r1=id/2, r2=0);
     }
 }
 
@@ -84,11 +75,19 @@ module cube_rounded(size = [10, 10, 10], center = true, r = 1) {
 
 module m2_screw_hole() {
     translate([0, 0, -e]) {
-        translate([0, 0, -e]) cylinder(0.1+e, d = 4);
-        cylinder(10, d=2);
+        cylinder(10, d=2.2);
         translate([0, 0, 0.1-e]) cylinder(h = 2, d1 = 4, d2 = 0);
+        // Make head outer part long for deep holes
+        translate([0, 0, 0.1]) mirror([0, 0, 1]) cylinder(30, d = 4);
     }
 
+}
+
+module fan50_guides() {
+    translate([20, 20, e]) cylinder(wall+2, d=5.6);
+    translate([20, -20, e]) cylinder(wall+2, d=5.6);
+    translate([-20, 20, e]) cylinder(wall+2, d=5.6);
+    translate([-20, -20, e]) cylinder(wall+2, d=5.6);
 }
 
 
@@ -103,7 +102,7 @@ module fan50_hole() {
 module fan50_grill() {
     dim = 0.5;
 
-    cylinder(wall - dim, d = 26);
+    cylinder(wall - dim, d = 24);
 
     translate([0, 0, (wall-dim)/2]) cube([50, 2, wall - dim], center = true);
     rotate([0, 0, 45])
@@ -115,9 +114,9 @@ module fan50_grill() {
 
 
     difference() {
-        cylinder(wall - dim, d = 39);
+        cylinder(wall - dim, d = 38);
         translate([0, 0, -e])
-        cylinder(wall - dim + 2e, d = 35);
+        cylinder(wall - dim + 2e, d = 34);
     };
 }
 
@@ -160,6 +159,19 @@ module tray() {
         union() {
             _tray_base();
 
+            // PCB + Display supports (solid, no holes)
+            translate([tray_wx/2 - 5, -pcb_wy/2 + 3, 0])
+            cube_rounded([8, 8, tray_h-pcb_h - e]);
+
+            translate([tray_wx/2 - 5, pcb_wy/2 - 3, 0])
+            cube_rounded([8, 8, tray_h-pcb_h - e]);
+
+            translate([tray_wx/2 - 50, -pcb_wy/2 + 3, 0])
+            cube_rounded([8, 8, tray_h-pcb_h - e]);
+
+            translate([tray_wx/2 - 50, pcb_wy/2 - 3, 0])
+            cube_rounded([8, 8, tray_h-pcb_h - e]);
+
             // Hinges area reinforcers
             translate([-tray_wx/2, -tray_wy/2 + wall*1.5 -e, 0])
             cube([tray_hinge_ox*2 + wall*1.5, wall + 2e, tray_h - pcb_h]);
@@ -168,8 +180,9 @@ module tray() {
             cube([tray_hinge_ox*2 + wall*1.5, wall + 2e, tray_h - pcb_h]);
             
             // Boot0 button guide
-            translate([tray_wx/2 - 6, -15, 0])
-            cylinder(tray_h - pcb_h - 3, d=6);
+            // Height = inner - btn_height - space_0.5_mm - cap_2_mm
+            translate([tray_wx/2 - 6, -17, 0])
+            cylinder(tray_h - pcb_h - 2.5 - 0.5 - 2.0, d=7);
             
             // Power input
             if (power_with_connector == false) {
@@ -196,8 +209,8 @@ module tray() {
 
             
         // Boot0 button guide hole
-        translate([tray_wx/2 - 6, -15, -e])
-        cylinder(tray_h, d=3);
+        translate([tray_wx/2 - 6, -17, -e])
+        cylinder(tray_h, d=5);
 
         // Power input
         if (power_with_connector == false) {
@@ -209,14 +222,14 @@ module tray() {
             translate([-40+5, tray_wy/2-10, 0]) m2_screw_hole();
         }
 
-        // Trough holes for supports
-        translate([tray_wx/2 - 5, -pcb_wy/2 + 3, -e]) cylinder(wall+2e, d=4);
-        translate([tray_wx/2 - 5, pcb_wy/2 - 3, -e]) cylinder(wall+2e, d=4);
-        translate([tray_wx/2 - 50, -pcb_wy/2 + 3, -e]) cylinder(wall+2e, d=4);
-        translate([tray_wx/2 - 50, pcb_wy/2 - 3, -e]) cylinder(wall+2e, d=4);
+        // Holes in supports for 14mm M2 screws (with 3mm display cap inserts)
+        translate([tray_wx/2 - 5, -pcb_wy/2 + 3, tray_h - (14-3)]) m2_screw_hole();
+        translate([tray_wx/2 - 5, pcb_wy/2 - 3, tray_h - (14-3)]) m2_screw_hole();
+        translate([tray_wx/2 - 50, -pcb_wy/2 + 3, tray_h - (14-3)]) m2_screw_hole();
+        translate([tray_wx/2 - 50, pcb_wy/2 - 3, tray_h - (14-3)]) m2_screw_hole();
 
         // USB
-        translate([tray_wx/2-wall, -26, tray_h-pcb_h-2])
+        translate([tray_wx/2-wall, 12, tray_h-pcb_h-2])
         translate([1, 0, 1])
         cube([2+2e, 8, 2+2e], center=true);
         
@@ -240,23 +253,15 @@ module tray() {
     difference() {
         translate([-tray_wx/2 + 3 + wall, 0, -e])
         cube_rounded([7, 7, tray_h-pcb_h], r=1);
-        translate([-tray_wx/2 + 3 + wall, 0, tray_h - pcb_h - insert_h])
-        cylinder(insert_h+e, d=insert_d);
+        
+        translate([-tray_wx/2 + 3 + wall, 0, tray_h - pcb_h + e])
+        mirror([0, 0, 1])
+        union() {
+            cylinder(insert_h, d = insert_d);
+            cylinder(insert_h+2, d = 2.5);
+        }
+
     }
-
-
-    // PCB + Display supports
-    translate([tray_wx/2 - 5, -pcb_wy/2 + 3, 0])
-    tray_stand_through(h = tray_h-pcb_h, w=8, id=4, ih=tray_h-pcb_h-4);
-
-    translate([tray_wx/2 - 5, pcb_wy/2 - 3, 0])
-    tray_stand_through(h = tray_h-pcb_h, w=8, id=4, ih=tray_h-pcb_h-4);
-
-    translate([tray_wx/2 - 50, -pcb_wy/2 + 3, 0])
-    tray_stand_through(h = tray_h-pcb_h, w=8, id=4, ih=tray_h-pcb_h-4);
-
-    translate([tray_wx/2 - 50, pcb_wy/2 - 3, 0])
-    tray_stand_through(h = tray_h-pcb_h, w=8, id=4, ih=tray_h-pcb_h-4);
     
     // Fan wire latches
     translate([5, -tray_wy/2+wall+2, 0])
@@ -347,8 +352,19 @@ module cap1() {
 
 module cap2() {
     difference() {
-        translate([0, -tray_wy/2, 0])
-        cube([cap2_wx, tray_wy, cap_h]);
+        union() {
+            difference() {
+                translate([0, -tray_wy/2, 0])
+                cube([cap2_wx, tray_wy, cap_h]);
+
+                // Inner
+                translate([wall, -tray_wy/2 + wall, wall])
+                cube_rounded([cap2_wx + 2*wall, tray_wy - 2*wall, cap_h], center=false, r=wall);
+            }
+            
+            // Fans screws guildes/reinforcers
+            translate([3+25, 0, 0]) fan50_guides();
+        }
 
         // Roundings
         translate([0, -tray_wy/2, -e])
@@ -358,10 +374,7 @@ module cap2() {
         rotate([0, 0, -90])
         qfillet(cap_h + 2e, wall);
 
-        // Inner
-        translate([wall, -tray_wy/2 + wall, wall])
-        cube_rounded([cap2_wx + 2*wall, tray_wy - 2*wall, cap_h], center=false, r=wall);
-
+        // Fan screws holes
         translate([3+25, 0, 0]) fan50_hole();
         
         // Small gap for hinges
@@ -421,6 +434,15 @@ module cap2() {
     latch(10);
 }
 
+module _cap_display_insert_hole() {
+    translate([0, 0, cap_display_h + e])
+    mirror([0, 0, 1])
+    union() {
+        cylinder(insert_h, d = insert_d);
+        cylinder(insert_h+0.8, d = 2.5);
+    }    
+}
+
 module cap_display() {
     difference() {
         cube_rounded([cap_display_wx, cap_display_wy, cap_display_h], r=wall);
@@ -438,19 +460,21 @@ module cap_display() {
             ]
         )
         square([cap_display_view_wx+cap_display_top_wall, cap_display_view_wy+cap_display_top_wall], center=true);
+        
+        x_fix = cap_display_mounts_x_shift;
 
         // Inserts
-        translate([-cap_display_x_inserts_space/2, -pcb_wy/2 + 3, cap_display_h + e - insert_h])
-        cylinder(insert_h, d=insert_d);
+        translate([-cap_display_x_inserts_space/2 + x_fix, -pcb_wy/2 + 3, 0])
+        _cap_display_insert_hole();
 
-        translate([-cap_display_x_inserts_space/2, pcb_wy/2 - 3, cap_display_h + e - insert_h])
-        cylinder(insert_h, d=insert_d);
+        translate([-cap_display_x_inserts_space/2 + x_fix, pcb_wy/2 - 3, 0])
+        _cap_display_insert_hole();
 
-        translate([cap_display_x_inserts_space/2, -pcb_wy/2 + 3, cap_display_h + e - insert_h])
-        cylinder(insert_h, d=insert_d);
+        translate([cap_display_x_inserts_space/2 + x_fix, -pcb_wy/2 + 3, 0])
+        _cap_display_insert_hole();
 
-        translate([cap_display_x_inserts_space/2, pcb_wy/2 - 3, cap_display_h + e - insert_h])
-        cylinder(insert_h, d=insert_d);
+        translate([cap_display_x_inserts_space/2 + x_fix, pcb_wy/2 - 3, 0])
+        _cap_display_insert_hole();
 
         // Latches
         translate([0, -tray_wy/2 + wall, cap_display_h - latch_z_offset])
@@ -468,6 +492,12 @@ module cable_clip() {
         translate([-5, -e, 0]) cylinder(5, 2);
         translate([5, -e, 0]) cylinder(5, 2);
     }
+}
+
+module btn_cap() {
+    // Height = inner_h + wall - btn_h - cap_base - space - cap_deepness
+    cylinder(tray_h - pcb_h - 2.5 - 2.0 - 0.5 - 1, d=4.5);
+    cylinder(2, d=7);
 }
 
 module all() {
@@ -488,6 +518,9 @@ module all() {
 
     translate([30, 80, 0])
     cable_clip();
+    
+    translate([165, -17, 0])
+    btn_cap();
 }
 
 //mode = 2;
@@ -497,4 +530,5 @@ else if (!is_undef(mode) && mode == 1) { cap1(); }
 else if (!is_undef(mode) && mode == 2) { cap2(); }
 else if (!is_undef(mode) && mode == 3) { cap_display(); }
 else if (!is_undef(mode) && mode == 4) { cable_clip(); }
+else if (!is_undef(mode) && mode == 5) { btn_cap(); }
 else { all(); }
