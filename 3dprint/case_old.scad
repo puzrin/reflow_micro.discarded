@@ -7,31 +7,28 @@ $fn = 64;
 //$fs = 0.15;
 
 wall = 2;
-hinges_wall = 4;
-hinges_r = 3.8;  
-hinges_w = 3.75; 
-hinges_margin = 4;
-hinges_id = 2;
-hinges_gap = 0.2;
 
 pcb_wx = 145;
 pcb_wy = 80;
 pcb_h  = 1.6;
-pcb_x_margin = 0.2;
 pcb_y_margin = 0.2;
 
 tray_inner_wx = pcb_wx - wall - 1;
 tray_inner_wy = pcb_wy - wall;
 tray_inner_h  = 20;
 
-tray_wx = pcb_wx + hinges_wall;
+tray_wx = pcb_wx + wall;
 tray_wy = tray_inner_wy + 3*wall;
 tray_h  = tray_inner_h + pcb_h + wall;
 
-cap1_wx = 93;
-cap2_wx = tray_wx - cap1_wx;
+tray_hinge_ox = 6;
+tray_hinge_oz = 7;
 
-cap_inner_h = 19;
+cap1_wx = 90;
+cap2_wx = tray_wx - cap1_wx;
+cap1_slot = 7.3;
+
+cap_inner_h = 18;
 cap_h = cap_inner_h + wall;
 
 cap_display_mounts_x_shift = -0.2;
@@ -137,70 +134,22 @@ module latch(l = 10) {
     ]);
 }
 
-module hinges_section() {
-    rotate([-90, 0, 0])
-    difference() {
-        linear_extrude(hinges_w)
-        union() {
-            circle(hinges_r);
-            polygon([
-                [0, 0],
-                [-hinges_r/sqrt(2), hinges_r/sqrt(2)],
-                [0, hinges_r*sqrt(2)],
-                [hinges_r, hinges_r*sqrt(2)],
-                [hinges_r, 0]
-            ]);
-        }
-
-        translate([0, 0, -e])
-        cylinder(hinges_w+2e, d=hinges_id);
-    }
-}
-
-module hinges_section_space() {
-    rotate([-90, 0, 0])
-    translate([0, 0, -hinges_gap/2])
-    linear_extrude(hinges_w+0.2)
-    union() {
-        circle(r = hinges_r + hinges_gap);
-        square([hinges_r + hinges_gap, pcb_h]);
-
-        translate([-(hinges_r + hinges_gap)-e, 0, 0])
-        square([hinges_r + hinges_gap, (hinges_r + hinges_gap)*2]);
-    }
-}
-
-
-module tray_pcb_support() {
-    difference() {
-        cube_rounded([7, 7, tray_h-pcb_h], r=1);
-
-        translate([0, 0, tray_h - pcb_h + e])
-        mirror([0, 0, 1])
-        union() {
-            cylinder(insert_h, d = insert_d);
-            cylinder(insert_h+10, d = 2.5);
-        }
-
-    }
-}
-
 
 module _tray_base() {
     difference() {
         cube_rounded([tray_wx, tray_wy, tray_h], r = wall);
 
-        translate([-(tray_wx-tray_inner_wx)/2 + hinges_wall + 1, 0, wall])
+        translate([0.5, 0, wall])
         linear_extrude(tray_h)
         square([tray_inner_wx, tray_wy - wall*3], center=true);
 
-        translate([tray_wx - wall/2 - pcb_wx, 0, tray_h-pcb_h])
+        translate([(wall+e)/2, 0, tray_h-pcb_h])
         linear_extrude(pcb_h+e)
-        square([tray_wx - wall + e + pcb_x_margin*2, pcb_wy + 2*pcb_y_margin], center = true);
+        square([tray_wx - wall + e, pcb_wy + 2*pcb_y_margin], center = true);
 
         // Fan wire slot
-        translate([-tray_wx/2 + hinges_wall, -pcb_wy/2,  tray_h-pcb_h-3+e])
-        cube([3, 2.6, 5]);
+        translate([-tray_wx/2 + wall, -pcb_wy/2 + 3,  tray_h-pcb_h-5])
+        cube([3, 3, 5]);
     }
 }
 
@@ -223,35 +172,42 @@ module tray() {
             translate([tray_wx/2 - 50, pcb_wy/2 - 3, 0])
             cube_rounded([8, 8, tray_h-pcb_h - e]);
 
+            // Hinges area reinforcers
+            translate([-tray_wx/2, -tray_wy/2 + wall*1.5 -e, 0])
+            cube([tray_hinge_ox*2 + wall*1.5, wall + 2e, tray_h - pcb_h]);
+
+            translate([-tray_wx/2, tray_wy/2 - wall*2.5-e, 0])
+            cube([tray_hinge_ox*2 + wall*1.5, wall + 2e, tray_h - pcb_h]);
+            
             // Boot0 button guide
             // Height = inner - btn_height - space_0.5_mm - cap_2_mm
             translate([tray_wx/2 - 6, -17, 0])
             cylinder(tray_h - pcb_h - 2.5 - 0.5 - 2.0, d=7);
-
+            
             // Power input
             if (power_with_connector == false) {
                 translate([-40, tray_wy/2-9, 0])
                 cube_rounded([20, 18, 4]);
             }
             
-            // Hinges addons
-            translate([-tray_wx/2, -tray_wy/2 + hinges_margin, tray_h]) {
-                hinges_section();
-                translate([0, 2*hinges_w, 0]) hinges_section();
-            }
+            // Back wall
+            translate([-tray_wx/2, -tray_wy/2+wall, tray_h-e-0.5])
+            cube([wall, tray_wy - 2*wall, cap1_slot]);
 
-            mirror([0, 1, 0])
-            translate([-tray_wx/2, -tray_wy/2 + hinges_margin, tray_h]) {
-                hinges_section();
-                translate([0, 2*hinges_w, 0]) hinges_section();
-            }
-            
-            // Hinge angle limiter
-            translate([-tray_wx/2, 0, tray_h - hinges_r])
-            rotate([90, 45, 0])
-            cube([hinges_r*sqrt(2), hinges_r*sqrt(2), tray_wy - 2*(hinges_w*4 + hinges_margin + hinges_w*1.5)], center=true);
         }
 
+        // Hinges space
+        translate([-tray_wx/2, -tray_wy/2-e, -e])
+        cube([tray_hinge_ox*2 + 0.3, wall + 2e, tray_h+2e]);
+
+        translate([-tray_wx/2, tray_wy/2 - wall - e, -e])
+        cube([tray_hinge_ox*2 + 0.3, wall + 2e, tray_h+2e]);
+
+        translate([-tray_wx/2 + tray_hinge_ox, 0, tray_h - tray_hinge_oz])
+        rotate([90, 0, 0])
+        cylinder(tray_wy + 2e, d = 2, center = true);
+
+            
         // Boot0 button guide hole
         translate([tray_wx/2 - 6, -17, -e])
         cylinder(tray_h, d=5);
@@ -261,7 +217,7 @@ module tray() {
             translate([-40, tray_wy/2+e, 6])
             rotate([90, 0, 0])
             cube_rounded([5.3, 3.3, 4], r=1.6);
-
+            
             translate([-40-5, tray_wy/2-10, 0]) m2_screw_hole();
             translate([-40+5, tray_wy/2-10, 0]) m2_screw_hole();
         }
@@ -276,7 +232,7 @@ module tray() {
         translate([tray_wx/2-wall, 12, tray_h-pcb_h-2])
         translate([1, 0, 1])
         cube([2+2e, 8, 2+2e], center=true);
-
+        
         // Power Switch
         translate([-10, tray_wy/2+e, 9])
         rotate([90, 0, 0])
@@ -291,50 +247,22 @@ module tray() {
             polygon([[11, 3], [9.4, 4.5], [-9.4, 4.5], [-11, 3],
                      [-11, -3], [-9.4, -4.5], [9.4, -4.5], [11, -3]]);
         }
-        
-        // Hinges groves
-
-        translate([-tray_wx/2, -tray_wy/2 + hinges_margin, tray_h]) {
-            translate([0, hinges_w, 0]) hinges_section_space();
-            translate([0, 3*hinges_w, 0]) hinges_section_space();
-            // through hole
-            rotate([-90, 0, 0]) cylinder(hinges_w*4+2e, d = hinges_id);
-            // screw head space
-            rotate([-90, 0, 0])
-            translate([0, 0, -hinges_margin-e])
-            cylinder(hinges_margin+2e, d = 5.5);
-            // screw nut space
-            rotate([-90, 0, 0])
-            translate([0, 0, hinges_w*4 - e])
-            cylinder(hinges_w*1.5, d = 5.5);            
-        }
-
-        mirror([0, 1, 0])
-        translate([-tray_wx/2, -tray_wy/2 + hinges_margin, tray_h]) {
-            translate([0, hinges_w, 0]) hinges_section_space();
-            translate([0, 3*hinges_w, 0]) hinges_section_space();
-            // through hole
-            rotate([-90, 0, 0]) cylinder(hinges_w*4+2e, d = hinges_id);
-            // screw head space
-            rotate([-90, 0, 0])
-            translate([0, 0, -hinges_margin-e])
-            cylinder(hinges_margin+2e, d = 5.5);
-            // screw nut space
-            rotate([-90, 0, 0])
-            translate([0, 0, hinges_w*4 - e])
-            cylinder(hinges_w*1.5, d = 5.5);            
-        }
     }
 
-    // PCB supports
-    translate([tray_wx/2 - pcb_wx + 10, -pcb_wy/2 + 3, e])
-    tray_pcb_support();
+    // PCB support
+    difference() {
+        translate([-tray_wx/2 + 3 + wall, 0, -e])
+        cube_rounded([7, 7, tray_h-pcb_h], r=1);
+        
+        translate([-tray_wx/2 + 3 + wall, 0, tray_h - pcb_h + e])
+        mirror([0, 0, 1])
+        union() {
+            cylinder(insert_h, d = insert_d);
+            cylinder(insert_h+2, d = 2.5);
+        }
 
-    mirror([0, 1, 0])
-    translate([tray_wx/2 - pcb_wx + 10, -pcb_wy/2 + 3, e])
-    tray_pcb_support();
-
-
+    }
+    
     // Fan wire latches
     translate([5, -tray_wy/2+wall+2, 0])
     cube([10, 1, 12]);
@@ -351,29 +279,49 @@ module cap1() {
             translate([0, -tray_wy/2, 0])
             cube([cap1_wx, tray_wy, cap_h]);
 
-            // Hinges addons
-            translate([0, -tray_wy/2 + hinges_margin, cap_h]) {
-                translate([0, 1*hinges_w, 0]) hinges_section();
-                translate([0, 3*hinges_w, 0]) hinges_section();
-            }
+            // Tray hinges parts
+            translate([0, -tray_wy/2, 0])
+            cube([tray_hinge_ox*2, wall, cap_h + tray_hinge_oz + tray_hinge_ox]);
 
-            mirror([0, 1, 0])
-            translate([0, -tray_wy/2 + hinges_margin, cap_h]) {
-                translate([0, 1*hinges_w, 0]) hinges_section();
-                translate([0, 3*hinges_w, 0]) hinges_section();
-            }
-
+            translate([0, tray_wy/2 - wall, 0])
+            cube([tray_hinge_ox*2, wall, cap_h + tray_hinge_oz + tray_hinge_ox]);
         }
 
-        // Remove inner
-        translate([hinges_wall+1-e, -tray_wy/2 + wall, wall])
-        cube([cap1_wx, tray_wy - 2*wall, cap_h - wall + e], center = false);
+        rotate([0, 45, 0]) cube([diag, tray_wy+2e, diag], center = true);
 
-        // Cap2 hinges rounding & hole
+        // Tray hinges rounding
+        translate([0, -tray_wy/2-e, cap_h + tray_hinge_oz + tray_hinge_ox])
+        rotate([-90, 0, 0])
+        qfillet(tray_wy+2e, tray_hinge_ox);
+
+        translate([tray_hinge_ox*2, tray_wy/2+e, cap_h + tray_hinge_oz + tray_hinge_ox])
+        rotate([90, 180, 0])
+        qfillet(tray_wy+2e, tray_hinge_ox);
+
+        // Tray hinges hole
+        translate([tray_hinge_ox, tray_wy/2, cap_h + tray_hinge_oz])
+        rotate([90, 0, 0])
+        m2_screw_hole();
+
+        translate([tray_hinge_ox, -tray_wy/2, cap_h + tray_hinge_oz])
+        rotate([-90, 0, 0])
+        m2_screw_hole();
+
+        // Remove inner
+        translate([wall, -tray_wy/2 + wall, wall])
+        difference() {
+            cube([cap1_wx, tray_wy - 2*wall, cap_h - wall + e], center = false);
+            rotate([0, 45, 0]) translate([0, tray_wy/2, 0]) cube([diag, tray_wy+2e, diag], center = true);
+        }
+
+        translate([-e, -tray_wy/2 + wall, cap_h - cap1_slot])
+        cube([wall+2e, tray_wy - 2*wall, cap1_slot+e]);
+
         translate([cap1_wx, tray_wy/2+e, cap_h])
         rotate([90, 180, 0])
         qfillet(tray_wy+2e, cap_inner_h/2);
 
+        // Cap2 hinges hole
         translate([cap1_wx - cap_inner_h/2, tray_wy/2, cap_h - cap_inner_h/2])
         rotate([90, 0, 0])
         m2_screw_hole();
@@ -384,47 +332,13 @@ module cap1() {
 
         // Round corners
         translate([0, -tray_wy/2, -e])
-        qfillet(cap_h + 2e, wall);
+        qfillet(cap_h + tray_hinge_oz + tray_hinge_ox + 2e, wall);
 
         translate([0, tray_wy/2, -e])
         rotate([0, 0, -90])
-        qfillet(cap_h + 2e, wall);
-
-        // Hinges groves
-
-        translate([0, -tray_wy/2 + hinges_margin, cap_h]) {
-            translate([0, 0*hinges_w, 0]) hinges_section_space();
-            translate([0, 2*hinges_w, 0]) hinges_section_space();
-            // through hole
-            rotate([-90, 0, 0]) cylinder(hinges_w*4+2e, d = hinges_id);
-            // screw head space
-            rotate([-90, 0, 0])
-            translate([0, 0, -hinges_margin-e])
-            cylinder(hinges_margin+2e, d = 5.5);
-            // screw nut space
-            rotate([-90, 0, 0])
-            translate([0, 0, hinges_w*4 - e])
-            cylinder(hinges_w*1.5, d = 5.5);            
-        }
-
-        mirror([0, 1, 0])
-        translate([0, -tray_wy/2 + hinges_margin, cap_h]) {
-            translate([0, 0*hinges_w, 0]) hinges_section_space();
-            translate([0, 2*hinges_w, 0]) hinges_section_space();
-            // through hole
-            rotate([-90, 0, 0]) cylinder(hinges_w*4+2e, d = hinges_id);
-            // screw head space
-            rotate([-90, 0, 0])
-            translate([0, 0, -hinges_margin-e])
-            cylinder(hinges_margin+2e, d = 5.5);
-            // screw nut space
-            rotate([-90, 0, 0])
-            translate([0, 0, hinges_w*4 - e])
-            cylinder(hinges_w*1.5, d = 5.5);            
-        }
-
+        qfillet(cap_h + tray_hinge_oz + tray_hinge_ox + 2e, wall);
     }
-
+    
     // Fan wire latches
     translate([15, tray_wy/2-wall-2, 0])
     cube([10, 1, cap_h-4]);
@@ -447,7 +361,7 @@ module cap2() {
                 translate([wall, -tray_wy/2 + wall, wall])
                 cube_rounded([cap2_wx + 2*wall, tray_wy - 2*wall, cap_h], center=false, r=wall);
             }
-
+            
             // Fans screws guildes/reinforcers
             translate([3+25, 0, 0]) fan50_guides();
         }
@@ -462,7 +376,7 @@ module cap2() {
 
         // Fan screws holes
         translate([3+25, 0, 0]) fan50_hole();
-
+        
         // Small gap for hinges
         translate([cap2_wx-0.2, -tray_wy/2-e, wall])
         cube([wall, tray_wy+2e, cap_h]);
@@ -477,7 +391,6 @@ module cap2() {
     translate([3+25, 0, 0]) fan50_grill();
 
 
-    // Hinges
     translate([cap2_wx, -tray_wy/2 + wall - e, 0])
     difference() {
         translate([-wall-0.3, 0, 0])
@@ -486,7 +399,7 @@ module cap2() {
         translate([cap_inner_h-0.3, wall+e, wall+0.3])
         rotate([90, -90, 0])
         qfillet(wall + 2e, cap_inner_h/2);
-
+        
         translate([-e, -e, -e])
         cube([cap_inner_h+e, wall*3, wall+0.3+2e]);
 
@@ -503,7 +416,7 @@ module cap2() {
         translate([cap_inner_h-0.3, wall+e, wall+0.3])
         rotate([90, -90, 0])
         qfillet(wall + 2e, cap_inner_h/2);
-
+        
         translate([-e, -e, -e])
         cube([cap_inner_h+e, wall*3, wall+0.3+2e]);
 
@@ -527,7 +440,7 @@ module _cap_display_insert_hole() {
     union() {
         cylinder(insert_h, d = insert_d);
         cylinder(insert_h+0.8, d = 2.5);
-    }
+    }    
 }
 
 module cap_display() {
@@ -547,7 +460,7 @@ module cap_display() {
             ]
         )
         square([cap_display_view_wx+cap_display_top_wall, cap_display_view_wy+cap_display_top_wall], center=true);
-
+        
         x_fix = cap_display_mounts_x_shift;
 
         // Inserts
@@ -576,8 +489,8 @@ module cap_display() {
 module cable_clip() {
     difference() {
         cube_rounded([20, 10, 4], r=3);
-        translate([-5, 0, -e]) cylinder(5, d=2);
-        translate([5, 0, -e]) cylinder(5, d=2);
+        translate([-5, -e, 0]) cylinder(5, 2);
+        translate([5, -e, 0]) cylinder(5, 2);
     }
 }
 
@@ -591,11 +504,12 @@ module all() {
     translate([tray_wx/2, 0, 0])
     tray();
 
-    translate([-40, 0, 8])
+    //translate([-9.0, 0, -7])
+    translate([-60, 0, -7])
     rotate([180, -135, 0])
     cap1();
 
-    translate([-50, 0, 160])
+    translate([-70, 0, 150])
     rotate([0, 135, 0])
     cap2();
 
@@ -604,12 +518,12 @@ module all() {
 
     translate([30, 80, 0])
     cable_clip();
-
+    
     translate([165, -17, 0])
     btn_cap();
 }
 
-//mode = 0;
+//mode = 2;
 
 if (!is_undef(mode) && mode == 0) { tray(); }
 else if (!is_undef(mode) && mode == 1) { cap1(); }
