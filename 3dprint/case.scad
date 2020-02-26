@@ -187,6 +187,19 @@ module tray_pcb_support() {
     }
 }
 
+module wire_latch() {
+    rotate([0, 90, 0])
+    linear_extrude(10)
+    polygon([
+        [0, 0],
+        [-14, 0],
+        [-14, 1],
+        [-13, 1.7],
+        [-12, 1],
+        [0, 1]
+    ]);
+}
+
 
 module _tray_base() {
     difference() {
@@ -307,10 +320,10 @@ module tray() {
 
 
     // Fan wire latches
-    translate([5, -tray_wy/2+wall+2, 0])
-    cube([10, 1, 12]);
-    translate([-55, -tray_wy/2+wall+2, 0])
-    cube([10, 1, 12]);
+    translate([3, -tray_wy/2+wall+3, 0])
+    mirror([0, 1, 0]) wire_latch();
+    translate([-50, -tray_wy/2+wall+3, 0])
+    mirror([0, 1, 0]) wire_latch();
 }
 
 
@@ -364,13 +377,9 @@ module cap1() {
     }
 
     // Fan wire latches
-    translate([15, tray_wy/2-wall-2, 0])
-    cube([10, 1, cap_h-4]);
-    translate([35, tray_wy/2-wall-2, 0])
-    cube([10, 1, cap_h-4]);
-    translate([55, tray_wy/2-wall-2, 0])
-    cube([10, 1, cap_h-4]);
-
+    translate([15, tray_wy/2-wall-2, 0]) wire_latch();
+    translate([35, tray_wy/2-wall-2, 0]) wire_latch();
+    translate([55, tray_wy/2-wall-2, 0]) wire_latch();
 }
 
 
