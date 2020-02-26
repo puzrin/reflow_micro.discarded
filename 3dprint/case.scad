@@ -8,11 +8,13 @@ $fn = 64;
 
 wall = 2;
 hinges_wall = 4;
-hinges_r = 3.8;  
-hinges_w = 3.75; 
+hinges_r = 3.7;
+hinges_section_w = 8;
 hinges_margin = 4;
+hinges_margin_tail = 6;
 hinges_id = 2;
-hinges_gap = 0.2;
+hinges_gap = 0.3;
+hinges_len = hinges_section_w*2 + hinges_margin + hinges_margin_tail;
 
 pcb_wx = 145;
 pcb_wy = 80;
@@ -137,39 +139,39 @@ module latch(l = 10) {
     ]);
 }
 
-module hinges_section() {
+module hinges_add(second = false) {
     rotate([-90, 0, 0])
-    difference() {
-        linear_extrude(hinges_w)
-        union() {
-            circle(hinges_r);
-            polygon([
-                [0, 0],
-                [-hinges_r/sqrt(2), hinges_r/sqrt(2)],
-                [0, hinges_r*sqrt(2)],
-                [hinges_r, hinges_r*sqrt(2)],
-                [hinges_r, 0]
-            ]);
-        }
-
-        translate([0, 0, -e])
-        cylinder(hinges_w+2e, d=hinges_id);
-    }
-}
-
-module hinges_section_space() {
-    rotate([-90, 0, 0])
-    translate([0, 0, -hinges_gap/2])
-    linear_extrude(hinges_w+0.2)
+    mirror([0, 0, second == false ? 0 : 1])
+    translate([0, 0, hinges_margin])
+    linear_extrude(hinges_section_w*2)
     union() {
-        circle(r = hinges_r + hinges_gap);
-        square([hinges_r + hinges_gap, pcb_h]);
-
-        translate([-(hinges_r + hinges_gap)-e, 0, 0])
-        square([hinges_r + hinges_gap, (hinges_r + hinges_gap)*2]);
+        circle(hinges_r);
+        polygon([
+            [0, 0],
+            [-hinges_r/sqrt(2), hinges_r/sqrt(2)],
+            [0, hinges_r*sqrt(2)],
+            [hinges_r, hinges_r*sqrt(2)],
+            [hinges_r, 0]
+        ]);
     }
 }
 
+module hinges_substract(second = false) {
+    rotate([-90, 0, 0])
+    mirror([0, 0, second == false ? 0 : 1]) {
+        // through hole
+        cylinder(hinges_len, d = hinges_id);
+        // screw head space
+        translate([0, 0, -e])
+        cylinder(hinges_margin+2e, d = 5.5);
+        // screw nut space
+        translate([0, 0, hinges_len - hinges_margin_tail - e])
+        cylinder(hinges_margin_tail, d = 5.5);
+        // hinge space
+        translate([0, 0, second == false ? hinges_margin + hinges_section_w : hinges_margin - hinges_gap])
+        cylinder(hinges_section_w + hinges_gap, r = hinges_r + hinges_gap);
+    }
+}
 
 module tray_pcb_support() {
     difference() {
@@ -233,23 +235,18 @@ module tray() {
                 translate([-40, tray_wy/2-9, 0])
                 cube_rounded([20, 18, 4]);
             }
-            
-            // Hinges addons
-            translate([-tray_wx/2, -tray_wy/2 + hinges_margin, tray_h]) {
-                hinges_section();
-                translate([0, 2*hinges_w, 0]) hinges_section();
-            }
 
-            mirror([0, 1, 0])
-            translate([-tray_wx/2, -tray_wy/2 + hinges_margin, tray_h]) {
-                hinges_section();
-                translate([0, 2*hinges_w, 0]) hinges_section();
-            }
-            
+            // Hinges addons
+            translate([-tray_wx/2, -tray_wy/2, tray_h])
+            hinges_add(second = false);
+
+            translate([-tray_wx/2, tray_wy/2, tray_h])
+            hinges_add(second = true);
+
             // Hinge angle limiter
             translate([-tray_wx/2, 0, tray_h - hinges_r])
             rotate([90, 45, 0])
-            cube([hinges_r*sqrt(2), hinges_r*sqrt(2), tray_wy - 2*(hinges_w*4 + hinges_margin + hinges_w*1.5)], center=true);
+            cube([hinges_r*sqrt(2), hinges_r*sqrt(2), tray_wy - 2*hinges_len], center=true);
         }
 
         // Boot0 button guide hole
@@ -291,39 +288,13 @@ module tray() {
             polygon([[11, 3], [9.4, 4.5], [-9.4, 4.5], [-11, 3],
                      [-11, -3], [-9.4, -4.5], [9.4, -4.5], [11, -3]]);
         }
-        
+
         // Hinges groves
+        translate([-tray_wx/2, -tray_wy/2, tray_h])
+        hinges_substract(second = false);
 
-        translate([-tray_wx/2, -tray_wy/2 + hinges_margin, tray_h]) {
-            translate([0, hinges_w, 0]) hinges_section_space();
-            translate([0, 3*hinges_w, 0]) hinges_section_space();
-            // through hole
-            rotate([-90, 0, 0]) cylinder(hinges_w*4+2e, d = hinges_id);
-            // screw head space
-            rotate([-90, 0, 0])
-            translate([0, 0, -hinges_margin-e])
-            cylinder(hinges_margin+2e, d = 5.5);
-            // screw nut space
-            rotate([-90, 0, 0])
-            translate([0, 0, hinges_w*4 - e])
-            cylinder(hinges_w*1.5, d = 5.5);            
-        }
-
-        mirror([0, 1, 0])
-        translate([-tray_wx/2, -tray_wy/2 + hinges_margin, tray_h]) {
-            translate([0, hinges_w, 0]) hinges_section_space();
-            translate([0, 3*hinges_w, 0]) hinges_section_space();
-            // through hole
-            rotate([-90, 0, 0]) cylinder(hinges_w*4+2e, d = hinges_id);
-            // screw head space
-            rotate([-90, 0, 0])
-            translate([0, 0, -hinges_margin-e])
-            cylinder(hinges_margin+2e, d = 5.5);
-            // screw nut space
-            rotate([-90, 0, 0])
-            translate([0, 0, hinges_w*4 - e])
-            cylinder(hinges_w*1.5, d = 5.5);            
-        }
+        translate([-tray_wx/2, tray_wy/2, tray_h])
+        hinges_substract(second = true);
     }
 
     // PCB supports
@@ -352,17 +323,11 @@ module cap1() {
             cube([cap1_wx, tray_wy, cap_h]);
 
             // Hinges addons
-            translate([0, -tray_wy/2 + hinges_margin, cap_h]) {
-                translate([0, 1*hinges_w, 0]) hinges_section();
-                translate([0, 3*hinges_w, 0]) hinges_section();
-            }
+            translate([0, -tray_wy/2, cap_h])
+            hinges_add(second = false);
 
-            mirror([0, 1, 0])
-            translate([0, -tray_wy/2 + hinges_margin, cap_h]) {
-                translate([0, 1*hinges_w, 0]) hinges_section();
-                translate([0, 3*hinges_w, 0]) hinges_section();
-            }
-
+            translate([0, tray_wy/2, cap_h])
+            hinges_add(second = true);
         }
 
         // Remove inner
@@ -391,38 +356,11 @@ module cap1() {
         qfillet(cap_h + 2e, wall);
 
         // Hinges groves
+        translate([0, -tray_wy/2, cap_h])
+        hinges_substract(second = false);
 
-        translate([0, -tray_wy/2 + hinges_margin, cap_h]) {
-            translate([0, 0*hinges_w, 0]) hinges_section_space();
-            translate([0, 2*hinges_w, 0]) hinges_section_space();
-            // through hole
-            rotate([-90, 0, 0]) cylinder(hinges_w*4+2e, d = hinges_id);
-            // screw head space
-            rotate([-90, 0, 0])
-            translate([0, 0, -hinges_margin-e])
-            cylinder(hinges_margin+2e, d = 5.5);
-            // screw nut space
-            rotate([-90, 0, 0])
-            translate([0, 0, hinges_w*4 - e])
-            cylinder(hinges_w*1.5, d = 5.5);            
-        }
-
-        mirror([0, 1, 0])
-        translate([0, -tray_wy/2 + hinges_margin, cap_h]) {
-            translate([0, 0*hinges_w, 0]) hinges_section_space();
-            translate([0, 2*hinges_w, 0]) hinges_section_space();
-            // through hole
-            rotate([-90, 0, 0]) cylinder(hinges_w*4+2e, d = hinges_id);
-            // screw head space
-            rotate([-90, 0, 0])
-            translate([0, 0, -hinges_margin-e])
-            cylinder(hinges_margin+2e, d = 5.5);
-            // screw nut space
-            rotate([-90, 0, 0])
-            translate([0, 0, hinges_w*4 - e])
-            cylinder(hinges_w*1.5, d = 5.5);            
-        }
-
+        translate([0, tray_wy/2, cap_h])
+        hinges_substract(second = true);
     }
 
     // Fan wire latches
