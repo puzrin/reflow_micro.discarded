@@ -10,7 +10,7 @@ wall = 2;
 hinges_wall = 4;
 hinges_r = 3.7;
 hinges_section_w = 8;
-hinges_margin = 4;
+hinges_margin = 6;
 hinges_margin_tail = 6;
 hinges_id = 2;
 hinges_gap = 0.3;
@@ -212,10 +212,6 @@ module _tray_base() {
         translate([tray_wx - wall/2 - pcb_wx, 0, tray_h-pcb_h])
         linear_extrude(pcb_h+e)
         square([tray_wx - wall + e + pcb_x_margin*2, pcb_wy + 2*pcb_y_margin], center = true);
-
-        // Fan wire slot
-        translate([-tray_wx/2 + hinges_wall, -pcb_wy/2,  tray_h-pcb_h-3+e])
-        cube([3, 2.6, 5]);
     }
 }
 
@@ -261,6 +257,10 @@ module tray() {
             rotate([90, 45, 0])
             cube([hinges_r*sqrt(2), hinges_r*sqrt(2), tray_wy - 2*hinges_len], center=true);
         }
+
+        // Fan wire slot
+        translate([-tray_wx/2 + hinges_wall, -pcb_wy/2,  tray_h-pcb_h-3+e])
+        cube([3, 2.6, 5]);
 
         // Boot0 button guide hole
         translate([tray_wx/2 - 6, -17, -e])
@@ -343,8 +343,12 @@ module cap1() {
             hinges_add(second = true);
         }
 
+        // Fan wire slot
+        translate([hinges_wall, pcb_wy/2,  cap_h-5+e])
+        mirror([0, 1, 0]) cube([3, 2.6, 5]);
+
         // Remove inner
-        translate([hinges_wall+1-e, -tray_wy/2 + wall, wall])
+        translate([hinges_wall + 0.5, -tray_wy/2 + wall, wall])
         cube([cap1_wx, tray_wy - 2*wall, cap_h - wall + e], center = false);
 
         // Cap2 hinges rounding & hole
