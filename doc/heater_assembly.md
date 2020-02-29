@@ -57,6 +57,9 @@ and have no experience, you should know:
 - ADD OIL to cut area. That's important.
 - Train first :). Do couple of test cuts.
 
+IMPORTANT. Prior to drill plate, check inner holes. Those are for 49mm MCH. If
+your heater has different size (48mm or 50mm) - stick MCH to PCB and drill 2 new holes at proper position.
+
 Stick plate to PCB with sticky tape, and drill holes to mount MCH and plate
 itself. Then, set exact drill bit height from previous test samples, and make
 cones for screw caps.
