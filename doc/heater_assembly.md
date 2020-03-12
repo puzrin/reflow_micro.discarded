@@ -49,25 +49,26 @@ Later, use this to set exact drill bit height in chuck.
 
 ## Drill plate
 
-You need 70*60mm plate, 4mm thick. 3mm thick posible, but not recommended. Cut
+You need 70*60mm plate, 4mm thick. 3mm thick possible, but not recommended. Cut
 it with circular or hand saw. If you use [mini table saw](https://www.aliexpress.com/item/32845187139.html)
 and have no experience, you should know:
 
 - No need to buy separate saw disc for metal, stock one is ok.
-- ADD OIL to cut area. That's important.
+- Add oil to cut area. That's important.
 - Train first :). Do couple of test cuts.
 
-IMPORTANT. Prior to drill plate, check inner holes. Those are for 49mm MCH. If
-your heater has different size (48mm or 50mm) - stick MCH to PCB and drill 2 new holes at proper position.
+IMPORTANT. Prior to drill plate, check inner holes. Those are for 49.2 mm MCH.
+If your one has different size (48mm or 50mm) - stick MCH to PCB and drill 2 new
+holes at the edge opposite to MCH wires.
 
 Stick plate to PCB with sticky tape, and drill holes to mount MCH and plate
 itself. Then, set exact drill bit height from previous test samples, and make
 cones for screw caps.
 
-Note: make outer cones 1mm deeper than inner cones, to leave enougth room
+Note: make outer cones 1mm deeper than inner cones, to leave enough room
 between heater and PCB.
 
-After all - sand plate to remove artefacts and improve painting quality.
+After all - sand plate to remove artifacts and improve painting quality.
 
 ![](images/plate_drilled_4mm.jpg)
 
@@ -91,7 +92,7 @@ manually.
 
 ## Painting
 
-It's very inportant to cover heater top with [high temperature black paint](https://www.google.com/search?q=high+temperature+paint), to
+It's very important to cover heater top with [high temperature black paint](https://www.google.com/search?q=high+temperature+paint), to
 increase IR emission. Difference between painted and unpainted surface is HUGE.
 
 We can not give you exact links, but such paints should be widely available in
@@ -143,15 +144,16 @@ Here is how heater looks under foil:
 
 ![](images/heater_inside.jpg)
 
-You need a peace of aluminum foil with 1cm reserve at every edge. It shouls be
+You need a peace of aluminum foil with 1cm reserve at every edge. It should be
 fat, 0.05mm (50um). Such foil is used for sauna thermal insulation, and available
 in appropriate stores. If you can's find it - try foil from food baking forms
 (straighten it with something round if needed).
 
-Apply thermal conductive paste to plate, put heater to it's place and stick it temporary with sticky tape. Note, paste should be ok at high temperature. For
+Apply thermal conductive paste to plate, put heater to it's place and stick it
+temporary with sticky tape. Note, paste should be ok at high temperature. For
 example - Thermal Grizzly Kryonaut.
 
-Cut peace with 1cm reserve from each side and drill inner screw holed with
+Cut peace with 1cm reserve from each side and drill inner screw holes with
 conductor. Screw it from one side, insert half-huts with tweezers and tighten
 the screws. Then remove sticky tape and install 2 other screws in similar way.
 
@@ -168,8 +170,8 @@ metal parts size change on heating and cooling.
 PCB should have additional reflective layer to stay cold. That's done with fat
 aluminum sticky tape (0.05-0.1mm). It also help to spread heat from screws.
 
-Cover PCB with aluminium tape under heater, with 1cm outer margin. Then clean
-everything with IPA and mount assembled heater. Space between aluminium plate
+Cover PCB with aluminum tape under heater, with 1cm outer margin. Then clean
+everything with IPA and mount assembled heater. Space between aluminum plate
 and PCB should be ~13mm. Here is how it looks on standalone peace of PCB:
 
 ![](image/../images/heater_on_pcb.jpg)
