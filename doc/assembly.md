@@ -14,7 +14,7 @@ Device assembly <!-- omit in toc -->
 
 &nbsp; | Name | Comment
 -------|------|--------
-1 | [PCB & Components](https://easyeda.com/reflow/reflow-micro-table) | Go to EasyEda project page and order both in couple of clicks. If you order PCB first, components second, then you will be able to join delivery and save some bucks.
+1 | [PCB & Components](https://easyeda.com/reflow/reflow-micro-table) | Go to EasyEda project page and order both in couple of clicks. If you order PCB first, components second - you will be able to join delivery. Add rocker switch below to LCSC order.
 2 | [Rocker switch](https://lcsc.com/product-detail/Rocker-Switches_HONGJU-MR6-210-C5L-BR_C268234.html) |
 3 | [2.4" Display](https://www.aliexpress.com/item/32852776943.html) | 240*320, SPI, ILI9341, touch screen.
 4 | [Power cord](https://www.aliexpress.com/item/32961795481.html) |
