@@ -282,10 +282,15 @@ module tray() {
         translate([tray_wx/2 - 50, -pcb_wy/2 + 3, tray_h - (14-3)]) m2_screw_hole();
         translate([tray_wx/2 - 50, pcb_wy/2 - 3, tray_h - (14-3)]) m2_screw_hole();
 
-        // USB
-        translate([tray_wx/2-wall, 12, tray_h-pcb_h-2])
-        translate([1, 0, 1])
-        cube([2+2e, 8, 2+2e], center=true);
+        // USB trough
+        translate([tray_wx/2, 12, tray_h-pcb_h])
+        translate([-wall/2, 0, -(2.7/2)+e])
+        cube([wall+2e, 8, 2.7+e], center=true);
+
+        // USB blind
+        translate([tray_wx/2-wall+0.8, 26, tray_h-pcb_h])
+        translate([-wall/2, 0, -(2.7/2)+e])
+        cube([wall+2e, 8, 2.7+e], center=true);
 
         // Power Switch
         translate([-10, tray_wy/2+e, 9])
@@ -560,7 +565,7 @@ module all() {
     btn_cap();
 }
 
-//mode = 0;
+mode = 0;
 
 if (!is_undef(mode) && mode == 0) { tray(); }
 else if (!is_undef(mode) && mode == 1) { cap1(); }
