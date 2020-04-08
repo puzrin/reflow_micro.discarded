@@ -34,6 +34,8 @@ jobs:
       before_install:
         - HOMEBREW_NO_AUTO_UPDATE=1 brew install sdl2
       install:
+        - sudo easy_install pip # TODO: remove after https://travis-ci.community/t/missed-pip-after-xcode-image-update/7802 fixed
+        - pip install --upgrade pip
         - pip install -U platformio
         - platformio update
       script:
