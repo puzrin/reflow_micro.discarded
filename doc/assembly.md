@@ -4,8 +4,10 @@ Device assembly <!-- omit in toc -->
 - [Required components](#required-components)
   - [General](#general)
   - [Optional](#optional)
+- [Heater assembly](#heater-assembly)
 - [PCB assembly](#pcb-assembly)
 - [Firmware upload](#firmware-upload)
+- [Case](#case)
 
 
 ## Required components
@@ -43,6 +45,9 @@ add ~ 8$ in total to your order - good price for convenience. On placing stencil
 order at jlcpcb, select option "custom size", and define small one. Then stencil
 will be compact and light, with small delivery cost.
 
+**Important!** If you order SMT stencil, add text note to your order: "**make
+stencil according to paste mask file and don't forget corner holes**".
+
 
 ### Optional
 
@@ -65,11 +70,43 @@ If you are patient enough, you can cut aluminum with hand saw. But circular
 saw is much more convenient.
 
 
+## Heater assembly
+
+All details are  in [separate document](heater_assembly.md) to keep this one
+compact.
+
+That's the most boring part. Read is carefully before start making this device.
+
+
 ## PCB assembly
+
+Pin SMT stencil and PCB with 22 AWG wire to silicon pad.
+
+![](images/pcb_smt_stencil.jpg)
+
+Apply soldering paste, place SMD components and solder all with air gun.
+Inspect result and fix defects with soldering iron if needed. Place & solder
+the rest of components.
+
+![](images/pcb_bottom.jpg)
+
+Cleanup PCB from flux and place sticky aluminum type on area behind heater.
+Also place any insulating type on small area behind display.
+
+![](images/pcb_top.jpg)
+
+Mount display & heater.
+
+![](images/pcb_all.jpg)
+
+Now everything ready to be flashed and placed into case.
+
+
+## Firmware upload
 
 TBD
 
 
-## Firmware upload
+## Case
 
 TBD
