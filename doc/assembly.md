@@ -33,7 +33,7 @@ Device assembly <!-- omit in toc -->
 15 | [M2 nuts](https://www.aliexpress.com/item/32859946901.html) | Hinges assembly, cooling fan mount.
 16 | [M2 flat cap screws 8mm](https://www.aliexpress.com/item/4000217127933.html) | Hinges assembly.
 17 | [Mushroom head M2 screws 5mm](https://www.aliexpress.com/item/4000168030333.html) | PCB mount.
-18 | [MCH 50*50*2mm 150W](https://www.aliexpress.com/item/33005272347.html) | [Alternate](https://www.aliexpress.com/item/32991559341.html). Minimal power at room temp - 130W. For 110 volts buy 300W one.
+18 | [MCH 50\*50\*2mm 150W](https://www.aliexpress.com/item/33005272347.html) | [Alternate](https://www.aliexpress.com/item/32991559341.html). Minimal power at room temp - 130W. For 110 volts buy 300W one.
 19 | [Aluminium plate 4mm](https://www.aliexpress.com/item/32998175339.html) | [Alternate](https://www.aliexpress.com/item/32985318306.html).  Heater. You may also wish to buy 2mm plate for shims, if have no circular saw.
 20 | Aluminum Foil 50μm (0.05mm) | Heater bottom insulation. Such foil is sold for sauna insulation. You can also try foil from baking forms.
 21 | [Aluminium sticky tape](https://www.aliexpress.com/item/33036337241.html) | PCB reflector. You need fat, 50-100um tape, 30-50mm wide. Don't use cheap thin one, it will not work as needed.
