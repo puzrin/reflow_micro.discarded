@@ -1,0 +1,36 @@
+{
+  "build": {
+    "cpu": "cortex-m4",
+    "extra_flags": "-DSTM32G4xx -DSTM32G473xx",
+    "f_cpu": "170000000L",
+    "mcu": "stm32g474rct6"
+  },
+  "debug": {
+    "openocd_target": "stm32g4x",
+    "jlink_device": "STM32G473RC",
+    "svd_path": "STM32G473xx.svd"
+  },
+  "frameworks": [
+    "arduino",
+    "mbed",
+    "stm32cube"
+  ],
+  "name": "STM32G473RC",
+  "upload": {
+    "maximum_ram_size": 131072,
+    "maximum_size": 524288,
+    "protocol": "stlink",
+    "protocols": [
+      "jlink",
+      "stlink",
+      "blackmagic",
+      "mbed",
+      "dfu"
+    ],
+    "require_upload_port": true,
+    "use_1200bps_touch": false,
+    "wait_for_upload_port": false
+  },
+  "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32g473rc.html",
+  "vendor": "Generic"
+}
