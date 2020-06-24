@@ -20,6 +20,7 @@ jobs:
         - platformio run -e emulator
         - platformio run -e hardware_gui_usb
         - platformio run -e hardware_io_usb
+        - platformio run -e hardware_gui_pd
         # Run tests
         #- platformio test -e emulator
     -
