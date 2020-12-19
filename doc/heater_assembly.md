@@ -23,7 +23,7 @@ Also, we recommend you build drilling conductor for ideal drill angle and depth.
 
 That's not mandatory, but simplifies making accurate holes for screws:
 
-![](images/drill_conductor_duo.jpg)
+<img src="images/drill_conductor_duo.jpg" width="60%" alt="Drill conductor">
 
 Holes are 1.7mm and 3.1mm (in M6 screws, glued with CA), for appropriate drill bits.
 
@@ -49,20 +49,24 @@ Later, use this to set exact drill bit height in chuck.
 
 ## Drill plate
 
-You need 70*60mm plate, 4mm thick. 3mm thick possible, but not recommended. Cut
-it with circular or hand saw. If you use [mini table saw](https://www.aliexpress.com/item/32845187139.html)
-and have no experience, you should know:
+You need 70*60mm plate, 4mm thick. Cut it with circular or hand saw. If you use
+[mini table saw](https://www.aliexpress.com/item/32845187139.html) and have no
+experience, you should know:
 
 - No need to buy separate saw disc for metal, stock one is ok.
 - Add oil to cut area. That's important.
 - Train first :). Do couple of test cuts.
 
+Stick plate to PCB with sticky tape, and drill 1.7mm holes to mount MCH and plate
+itself. Use conductor above to justify direction.
+
+<img src="images/drill_conductor_pcb.jpg" width="60%" alt="Drill conductor">
+
 IMPORTANT. Prior to drill plate, check inner holes. Those are for 49.2 mm MCH.
 If your one has different size (48mm or 50mm) - stick MCH to PCB and drill 2 new
 holes at the edge opposite to MCH wires.
 
-Stick plate to PCB with sticky tape, and drill holes to mount MCH and plate
-itself. Then, set exact drill bit height from previous test samples, and make
+Then, set exact drill bit height from previous test samples, and make
 cones for screw caps.
 
 Note: make outer cones 1mm deeper than inner cones, to leave enough room
@@ -70,7 +74,7 @@ between heater and PCB.
 
 After all - sand plate to remove artifacts and improve painting quality.
 
-![](images/plate_drilled_4mm.jpg)
+<img src="images/plate_drilled.jpg" width="60%" alt="Drilled plate">
 
 If you have orbital sander - use it. Manual sanding is ok to, but takes more
 time.
@@ -84,7 +88,7 @@ to avoid skew. Those can be done from any pease of 1.5-2.0mm metal.
 Drill a series of 2mm holes with step 5mm and margin 3mm from border. Then, at
 circular saw, cut the line and split to peaces:
 
-![](images/mch_half_shims.jpg)
+<img src="images/mch_half_shims.jpg" width="60%" alt="Shims">
 
 Precision is not critical. Just do as you can :). You can also make half-shims
 manually.
@@ -105,7 +109,7 @@ GOOD RESULT.
 You can stick plates with sticky tape to A4 paper. Then to hold it in one hand
 and apply aerosol paint by another hand. 2 thin layers are enough.
 
-![](images/plates_painted.jpg)
+<img src="images/plates_painted.jpg" width="60%" alt="Painted plate">
 
 After paint dries - bake it, according to instructions. If you wish to keep
 kitchen oven clean, try [cheap heater](https://www.aliexpress.com/item/32997139401.html)
@@ -118,31 +122,24 @@ Notes:
   to 250C. And keep at max temp 1-2 hours.
 - Don't touch paint while bake. It becomes very tender at start.
 
-![](images/plate_baked_4mm.jpg)
+<img src="images/plate_baked.jpg" width="60%" alt="Baked plate">
 
 After baking done - sand border sides, those should not emit heat.
 
 
 ## MCH pads insulation
 
-Since MCH has open pads and placed between metal surfaces, it's important to
-make good electric insulation.
+Since MCH has open pads and been covered by reflor foil, those should be
+insulated. This is done by peace of kapton (polyimide) sicky tape.
 
-First, move wire coating "inside" ceramic body:
-
-![](images/mch_pads.jpg)
-
-Then add 2 peaces of kapton (polyimide) tape to close pads. And from another
-side, to close sticky layer and hold wire insulation.
-
-![](images/mch_insulated.jpg)
+<img src="images/mch_insulated.jpg" width="60%" alt="MCH insulation">
 
 
 ## Full assembly
 
 Here is how heater looks under foil:
 
-![](images/heater_inside.jpg)
+<img src="images/heater_inside.jpg" width="60%" alt="Heater inside">
 
 You need a peace of aluminum foil with 1cm reserve at every edge. It should be
 fat, 0.05mm (50um). Such foil is used for sauna thermal insulation, and available
@@ -160,7 +157,7 @@ the screws. Then remove sticky tape and install 2 other screws in similar way.
 After 4 inner screws assembled, smooth the foil, drill corner holes and install
 long corner screws:
 
-![](images/heater_assembled.jpg)
+<img src="images/heater_assembled.jpg" width="60%" alt="Assembled heater">
 
 Don't forget to use spring washers everywhere. That's important to compensate
 metal parts size change on heating and cooling.
@@ -174,7 +171,7 @@ Cover PCB with aluminum tape under heater, with 1cm outer margin. Then clean
 everything with IPA and mount assembled heater. Space between aluminum plate
 and PCB should be ~13mm. Here is how it looks on standalone peace of PCB:
 
-![](image/../images/heater_on_pcb.jpg)
+<img src="images/heater_on_pcb.jpg" width="60%" alt="Heater on PCB">
 
 If everything is done right, heater can work unlimited time at 270C while
 keeping PCB almost cold.
