@@ -64,13 +64,15 @@ itself. Use conductor above to justify direction.
 
 IMPORTANT. Prior to drill plate, check inner holes. Those are for 49.2 mm MCH.
 If your one has different size (48mm or 50mm) - stick MCH to PCB and drill 2 new
-holes at the edge opposite to MCH wires.
+conducing holes at the edge opposite to MCH wires.
 
-Then, set exact drill bit height from previous test samples, and make
-cones for screw caps.
+Now you need to make cones of proper height. Use separate peace of metal and make
+0.5mm and 2.0mm deep cones. Repeat until satisfied. Then test sample to set
+exact drill bit height, and ceate cones in plate:
 
-Note: make outer cones 1mm deeper than inner cones, to leave enough room
-between heater and PCB.
+- 0.5mm deep inner cones (for MCH mount).
+- 2.0mm deep outer cones (for mounting to PCB). More deep cones needed to
+  increase air gap.
 
 After all - sand plate to remove artifacts and improve painting quality.
 
@@ -83,7 +85,7 @@ time.
 ## Half-shims for MCH mount
 
 MCH is mounted to plate by edges. We need supports from another side of screws
-to avoid skew. Those can be done from any pease of 1.5-2.0mm metal.
+to avoid skew. Those can be done from any peace of 1.5-2.0mm metal.
 
 Drill a series of 2mm holes with step 5mm and margin 3mm from border. Then, at
 circular saw, cut the line and split to peaces:
@@ -109,7 +111,7 @@ GOOD RESULT.
 You can stick plates with sticky tape to A4 paper. Then to hold it in one hand
 and apply aerosol paint by another hand. 2 thin layers are enough.
 
-<img src="images/plates_painted.jpg" width="60%" alt="Painted plate">
+<img src="images/plate_painted.jpg" width="60%" alt="Painted plate">
 
 After paint dries - bake it, according to instructions. If you wish to keep
 kitchen oven clean, try [cheap heater](https://www.aliexpress.com/item/32997139401.html)
