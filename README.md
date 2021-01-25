@@ -15,7 +15,7 @@ time an don't wish to keep big reflowers from microwave ovens.
 Working area is up to 70\*60mm. That's enougth for almost all hobby PCBs with
 SMD components.
 
-- [EasyEDA project page](https://easyeda.com/reflow/reflow-micro-table) -
+- [EasyEDA project page](https://easyeda.com/reflow/reflow-usb-pd-ext) -
   Schematic & PCB. Order everything in couple of clicks.
 - [Thingiverse page](https://www.thingiverse.com/thing:4165226) - Case drafts
   for 3d-printer.

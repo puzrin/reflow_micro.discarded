@@ -16,7 +16,7 @@ Device assembly <!-- omit in toc -->
 
 &nbsp; | Name | Comment
 -------|------|--------
-1 | [PCB & Components](https://easyeda.com/reflow/reflow-micro-table) | Go to EasyEda project page and order both in couple of clicks. If you order PCB first, components second - you will be able to join delivery. Add rocker switch below to LCSC order.
+1 | [PCB & Components](https://easyeda.com/reflow/reflow-usb-pd-ext) | Go to EasyEda project page and order both in couple of clicks. If you order PCB first, components second - you will be able to join delivery. Add rocker switch below to LCSC order.
 2 | [2.4" Display](https://www.aliexpress.com/item/32852776943.html) | 240*320, SPI, ILI9341, touch screen.
 3 | [Cooling fan 5010](https://www.aliexpress.com/item/4000194163972.html) |
 4 | [22 AWG wire](https://www.aliexpress.com/item/32854919883.html) | Optional, SMT stencil positioning.
@@ -87,8 +87,8 @@ Inspect result and fix defects with soldering iron if needed.
 
 <img src="images/pcb_bottom.jpg" width="60%" alt="PCB bottom">
 
-Cleanup PCB from flux and place sticky aluminum type on area behind heater.
-Also place any insulating type on small area behind display.
+Cleanup PCB from flux, mount LCD and place sticky aluminum type on area
+behind heater.
 
 <img src="images/pcb_top.jpg" width="60%" alt="PCB top">
 
