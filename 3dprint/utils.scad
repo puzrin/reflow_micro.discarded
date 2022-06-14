@@ -77,3 +77,13 @@ module skew(dims) {
     ];
     multmatrix(matrix) children();
 }
+
+module rotate_x(angle) { rotate([angle, 0, 0]) children(); }
+module rotate_y(angle) { rotate([0, angle, 0]) children(); }
+module rotate_z(angle) { rotate([0, 0, angle]) children(); }
+
+module tr_x(ofs) { translate([ofs, 0, 0]) children(); }
+module tr_y(ofs) { translate([0, ofs, 0]) children(); }
+module tr_z(ofs) { translate([0, 0, ofs]) children(); }
+
+module mirror_y() { mirror([0, 1, 0]) children(); }
