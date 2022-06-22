@@ -22,14 +22,6 @@ wall = 2;
 hinges_wall = 4;
 right_wall = 2.5;
 
-hinges_r = 3.3;
-hinges_section_w = 8;
-hinges_margin = 6;
-hinges_margin_tail = 6;
-hinges_id = 2;
-hinges_gap = 0.3;
-hinges_len = hinges_section_w*2 + hinges_margin + hinges_margin_tail;
-
 pcb_wx = 145;
 pcb_wy = 80;
 pcb_margin = 0.25;
@@ -48,6 +40,15 @@ cap2_wx = tray_wx - cap1_wx;
 cap_inner_h = 20;
 cap_h = cap_inner_h + wall;
 
+hinges_d = 6.6;
+hinges_shaft_d = 2;
+hinges_full_w = 28.0;
+hinges_w = 17.0;
+hinges_inter_gap = 0.3;
+hinges_gap = 0.4;
+hinges_section_w = (hinges_w - hinges_inter_gap*2)/3;
+hinges_shift = tray_wy/2 - hinges_full_w/2;
+
 cap_display_mounts_x_shift = -0.0;
 cap_display_wx = 52;
 cap_display_wy = pcb_wy;
@@ -62,10 +63,10 @@ cap_display_view_wy = 51;
 
 case_r_vert = 3;
 case_r_bottom = 2;
-case_r_top = 2;
+case_r_top = 4;
 
 btn_base_h = 3;
-btn_d = 6.5;
+btn_d = 6.0;
 btn_guide_d = btn_d + 0.5 + 6;
 pcb_btn_h = 2.7; // Height of button's top point on PCB
 
@@ -152,26 +153,67 @@ module fan50_grill() {
 
 module hinges_add() {
     rotate([-90, 0, 0])
-    translate([0, 0, hinges_margin])
+    tr_z(-hinges_w/2)
     hull() {
-        cylinder(hinges_section_w*2, r = hinges_r);
-        cube([hinges_r, hinges_r*sqrt(2), hinges_section_w*2]);
+        cylinder(hinges_w, d = hinges_d);
+        cube([hinges_d/2, hinges_d/sqrt(2), hinges_w]);
     }
 }
 
 module hinges_substract(second = false) {
     rotate([-90, 0, 0]) {
         // through hole
-        cylinder(hinges_len, d = hinges_id);
+        cylinder(hinges_w, d = hinges_shaft_d+e, center = true);
         // screw head space
-        translate([0, 0, -e])
-        cylinder(hinges_margin+2e, d = 5.5);
+        translate([0, 0, hinges_w/2-e])
+        cylinder((hinges_full_w-hinges_w)/2+2e, d = 5.5);
         // screw nut space
-        translate([0, 0, hinges_len - hinges_margin_tail - e])
-        cylinder(hinges_margin_tail, d = 5.5);
-        // hinge space
-        translate([0, 0, second == false ? hinges_margin + hinges_section_w -0.1 : hinges_margin - hinges_gap])
-        cylinder(hinges_section_w + hinges_gap + 0.1, r = hinges_r + hinges_gap);
+        mirror([0, 0, 1])
+        translate([0, 0, hinges_w/2-e])
+        cylinder((hinges_full_w-hinges_w)/2+2e, d = 5.5);
+        
+        if (second == false) {
+            cylinder(
+                hinges_section_w + hinges_inter_gap*2,
+                d = hinges_d + hinges_gap*2,
+                center = true
+            );
+        } else {
+            tr_z(hinges_section_w + hinges_inter_gap)
+            cylinder(
+                hinges_section_w + hinges_inter_gap*2,
+                d = hinges_d + hinges_gap*2,
+                center = true
+            );
+            
+            mirror([0, 0, 1])
+            tr_z(hinges_section_w + hinges_inter_gap)
+            cylinder(
+                hinges_section_w + hinges_inter_gap*2,
+                d = hinges_d + hinges_gap*2,
+                center = true
+            );
+        }
+    }
+}
+
+module cap2_hinge() {
+    margin = 2;
+    
+    rotate_x(90)
+    difference() {
+        linear_extrude(2)
+        hull() {
+            translate([-wall, wall + margin]) square(e);
+            translate([-wall, cap_h]) square(e);
+            translate([cap_inner_h - margin, cap_h]) square(e);
+
+            translate([cap_inner_h/2, cap_inner_h/2+wall, 0])
+            circle(cap_inner_h/2 - margin);
+        };
+        
+        translate([cap_inner_h/2, cap_inner_h/2 + wall, 0])
+        cylinder(wall*4, d=2, center=true);
     }
 }
 
@@ -204,7 +246,7 @@ module wire_latch() {
 
 module magnet_holder(h = 10, wx = 7, wy = 7, md = 5, mh = 3) {
     difference() {
-        rcube([wx, wy, h - mh + 1]);
+        rcube([wx, wy, h - mh + 0.5]);
         tr_z(h - mh - 0.2) cylinder(h = mh+10, d = md+0.5);
     }
 }
@@ -217,7 +259,6 @@ module _tray_base() {
             rbottom = case_r_bottom
         );
 
-        //translate([-(tray_wx-tray_inner_wx)/2 + hinges_wall + 1, 0, wall])
         pcb_left(1) pcb_bottom(1) tr_z(wall)
         rcube([pcb_wx-2, pcb_wy-2, tray_h], r=2, rbottom=case_r_bottom, center=false);
 
@@ -257,17 +298,23 @@ module tray() {
             cylinder((tray_h - pcb_h) - pcb_btn_h - btn_base_h - 0.2, d=btn_guide_d);
 
             // Hinges addons
-            case_left() case_bottom() tr_z(tray_h)
+            case_left() tr_y(hinges_shift) tr_z(tray_h)
             hinges_add();
 
             mirror_y()
-            case_left() case_bottom() tr_z(tray_h)
+            case_left() tr_y(hinges_shift) tr_z(tray_h)
             hinges_add();
 
             // Hinge angle limiter
-            case_left() tr_z(tray_h - hinges_r)
+            stopper_w = tray_wy - hinges_full_w*2;
+            case_left() tr_z(tray_h) 
+            rotate_x(90) tr_z(-stopper_w/2)
+            linear_extrude(stopper_w)
+            polygon([[0,0], [-3,-3.5], [0,-6]]);
+
+            /*case_left() tr_z(tray_h - hinges_d/2)
             rotate([90, 45, 0])
-            cube([hinges_r*sqrt(2), hinges_r*sqrt(2), tray_wy - 2*hinges_len], center=true);
+            cube([hinges_d/sqrt(2), hinges_d/sqrt(2), tray_wy - 2*hinges_full_w], center=true);*/
         }
 
         // Fan wire slot
@@ -294,18 +341,21 @@ module tray() {
         m2_screw_hole_wide();
 
         // USB connector
-        pcb_right(-27.1) pcb_top(-5) tr_z(tray_h - pcb_h - 2.8/2 - 0.2)
-        rotate([-90, 0, 0])
-        translate([0, -5, 0])
-        rcube([8.6, 2.8 + 10, 10], r=1.3);
-
+        usb_w = 8.94;
+        usb_h = 3.26;
+        pcb_right(-27.1) pcb_top(pcb_margin-e) tr_z(tray_h - pcb_h)
+        rotate_x(-90) tr_y(-5 + usb_h) {
+            tr_z(-10+e) rcube([usb_w, 12, 10]);
+            rcube([usb_w, 10, 10], r=1.2);
+        }
+        
         // Hinges groves
-        case_left() case_bottom() tr_z(tray_h)
-        hinges_substract(second = true);
+        case_left() tr_y(hinges_shift) tr_z(tray_h)
+        hinges_substract();
 
         mirror_y()
-        case_left() case_bottom() tr_z(tray_h)
-        hinges_substract(second = true);
+        case_left() tr_y(hinges_shift) tr_z(tray_h)
+        hinges_substract();
     }
 
     // PCB supports
@@ -350,10 +400,10 @@ module cap1() {
             }
 
             // Hinges addons
-            case_bottom() tr_z(cap_h) hinges_add();
+            tr_y(hinges_shift) tr_z(cap_h) hinges_add();
 
             mirror_y()
-            case_bottom() tr_z(cap_h) hinges_add();
+            tr_y(hinges_shift) tr_z(cap_h) hinges_add();
         }
 
         // Fan wire slot
@@ -366,15 +416,8 @@ module cap1() {
             [cap1_wx+10, tray_wy - 2*wall, cap_h - wall + e],
             center = false,
             r = case_r_vert,
-            rbottom = 1 //case_r_top
+            rbottom = 2 //case_r_top
         );
-
-        // Remove rounding for Cap2 hinges
-        translate([cap1_wx-cap_inner_h+e, -tray_wy/2 + wall, wall])
-        cube(cap_inner_h);
-        mirror([0, 1, 0])
-        translate([cap1_wx-cap_inner_h+e, -tray_wy/2 + wall, wall])
-        cube(cap_inner_h);
 
         // Cap2 hinges rounding & hole
         translate([cap1_wx, tray_wy/2+e, cap_h])
@@ -390,17 +433,23 @@ module cap1() {
         m2_screw_hole();
 
         // Hinges groves
-        case_bottom() tr_z(cap_h)
-        hinges_substract(second = false);
+        tr_y(hinges_shift) tr_z(cap_h) 
+        hinges_substract(second = true);
 
         mirror_y()
-        case_bottom() tr_z(cap_h)
-        hinges_substract(second = false);
+        tr_y(hinges_shift) tr_z(cap_h) 
+        hinges_substract(second = true);
     }
 
     // Fan wire latches
     translate([25, tray_wy/2 - wall - 3, 0]) wire_latch();
     translate([50, tray_wy/2 - wall - 3, 0]) wire_latch();
+    
+    // Stopper
+    translate([cap1_wx, 0, wall-e])
+    tr_y(5) rotate_x(90) linear_extrude(10)
+    polygon([[0,0], [-1,1], [-2,1], [-2,0]]);
+
 }
 
 
@@ -425,7 +474,7 @@ module cap2() {
                     [cap2_wx + 2*wall, tray_wy - 2*wall, cap_h],
                     center=false,
                     r = 2,
-                    rbottom = 1 //case_r_top
+                    rbottom = 2 //case_r_top
                 );
 
                 // Fanair hole
@@ -445,39 +494,12 @@ module cap2() {
 
 
     // Hinges
-    translate([cap2_wx, -tray_wy/2 + wall - e, 0])
-    difference() {
-        translate([-wall-0.3, 0, 0])
-        cube([cap_inner_h + wall, wall, cap_h]);
+    tr_x(cap2_wx) case_top(-wall+e)
+    cap2_hinge();
 
-        translate([cap_inner_h-0.3, wall+e, wall+0.3])
-        rotate([90, -90, 0])
-        qfillet(wall + 2e, cap_inner_h/2);
-
-        translate([-e, -e, -e])
-        cube([cap_inner_h+e, wall*3, wall+0.3+2e]);
-
-        translate([cap_inner_h/2, -e, cap_inner_h/2 + wall])
-        rotate([-90, 0, 0])
-        cylinder(tray_wy + 2e, d = 2);
-    }
-
-    translate([cap2_wx, tray_wy/2 - 2*wall + e, 0])
-    difference() {
-        translate([-wall-0.3, 0, 0])
-        cube([cap_inner_h + wall, wall, cap_h]);
-
-        translate([cap_inner_h-0.3, wall+e, wall+0.3])
-        rotate([90, -90, 0])
-        qfillet(wall + 2e, cap_inner_h/2);
-
-        translate([-e, -e, -e])
-        cube([cap_inner_h+e, wall*3, wall+0.3+2e]);
-
-        translate([cap_inner_h/2, -e, cap_inner_h/2 + wall])
-        rotate([-90, 0, 0])
-        cylinder(tray_wy + 2e, d = 2);
-    }
+    mirror_y()
+    tr_x(cap2_wx) case_top(-wall+e)
+    cap2_hinge();
 
     // Magnet holders
     pcb_top(-magnet_d/2 - wall*0.5)
@@ -526,6 +548,7 @@ module cap_display() {
 
         // Visible area hole
         inc = cap_display_top_wall * tan(50) * 2;
+        tr_y(-0.5) // small correction
         hull() {
             tr_z(cap_display_top_wall)
             cube(
@@ -564,7 +587,7 @@ module cap_display() {
     pcb_top(-5)
     difference () {
         tr_z(cap_display_top_wall-e)
-        cylinder(h=cap_display_top_wall+0.5, d=magnet_d+2.5);
+        cylinder(h=0.5, d=magnet_d+2);
 
         tr_z(cap_display_top_wall-e)
         cylinder(h=cap_display_h, d=magnet_d+0.5);
@@ -604,7 +627,7 @@ module all(3d = false) {
     btn_cap();
 }
 
-//mode = 3;
+//mode = 2;
 
 if (!is_undef(mode) && mode == 0) { tray(); }
 else if (!is_undef(mode) && mode == 1) { cap1(); }
