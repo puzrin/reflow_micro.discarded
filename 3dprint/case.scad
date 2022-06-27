@@ -44,10 +44,11 @@ hinges_d = 6.6;
 hinges_shaft_d = 2;
 hinges_full_w = 28.0;
 hinges_w = 17.0;
-hinges_inter_gap = 0.3;
+hinges_inter_gap = 0.2;
 hinges_gap = 0.4;
 hinges_section_w = (hinges_w - hinges_inter_gap*2)/3;
 hinges_shift = tray_wy/2 - hinges_full_w/2;
+hinges_z_correction = 0.1; // Extra Z offset for better case closing
 
 cap_display_mounts_x_shift = -0.0;
 cap_display_wx = 52;
@@ -171,7 +172,7 @@ module hinges_substract(second = false) {
         mirror([0, 0, 1])
         translate([0, 0, hinges_w/2-e])
         cylinder((hinges_full_w-hinges_w)/2+2e, d = 5.5);
-        
+
         if (second == false) {
             cylinder(
                 hinges_section_w + hinges_inter_gap*2,
@@ -185,7 +186,7 @@ module hinges_substract(second = false) {
                 d = hinges_d + hinges_gap*2,
                 center = true
             );
-            
+
             mirror([0, 0, 1])
             tr_z(hinges_section_w + hinges_inter_gap)
             cylinder(
@@ -199,7 +200,7 @@ module hinges_substract(second = false) {
 
 module cap2_hinge() {
     margin = 2;
-    
+
     rotate_x(90)
     difference() {
         linear_extrude(2)
@@ -211,7 +212,7 @@ module cap2_hinge() {
             translate([cap_inner_h/2, cap_inner_h/2+wall, 0])
             circle(cap_inner_h/2 - margin);
         };
-        
+
         translate([cap_inner_h/2, cap_inner_h/2 + wall, 0])
         cylinder(wall*4, d=2, center=true);
     }
@@ -307,7 +308,7 @@ module tray() {
 
             // Hinge angle limiter
             stopper_w = tray_wy - hinges_full_w*2;
-            case_left() tr_z(tray_h) 
+            case_left() tr_z(tray_h)
             rotate_x(90) tr_z(-stopper_w/2)
             linear_extrude(stopper_w)
             polygon([[0,0], [-3,-3.5], [0,-6]]);
@@ -348,7 +349,7 @@ module tray() {
             tr_z(-10+e) rcube([usb_w, 12, 10]);
             rcube([usb_w, 10, 10], r=1.2);
         }
-        
+
         // Hinges groves
         case_left() tr_y(hinges_shift) tr_z(tray_h)
         hinges_substract();
@@ -400,10 +401,10 @@ module cap1() {
             }
 
             // Hinges addons
-            tr_y(hinges_shift) tr_z(cap_h) hinges_add();
+            tr_y(hinges_shift) tr_z(cap_h + hinges_z_correction) hinges_add();
 
             mirror_y()
-            tr_y(hinges_shift) tr_z(cap_h) hinges_add();
+            tr_y(hinges_shift) tr_z(cap_h + hinges_z_correction) hinges_add();
         }
 
         // Fan wire slot
@@ -433,18 +434,18 @@ module cap1() {
         m2_screw_hole();
 
         // Hinges groves
-        tr_y(hinges_shift) tr_z(cap_h) 
+        tr_y(hinges_shift) tr_z(cap_h + hinges_z_correction)
         hinges_substract(second = true);
 
         mirror_y()
-        tr_y(hinges_shift) tr_z(cap_h) 
+        tr_y(hinges_shift) tr_z(cap_h + hinges_z_correction)
         hinges_substract(second = true);
     }
 
     // Fan wire latches
     translate([25, tray_wy/2 - wall - 3, 0]) wire_latch();
     translate([50, tray_wy/2 - wall - 3, 0]) wire_latch();
-    
+
     // Stopper
     translate([cap1_wx, 0, wall-e])
     tr_y(5) rotate_x(90) linear_extrude(10)
@@ -541,7 +542,7 @@ module cap_display() {
         // Inner
         translate([0, 0, cap_display_top_wall])
         rcube([cap_display_wx - cap_display_wall*2, cap_display_wy - cap_display_wall*4, cap_display_inner_h+e], r=0.1);
- 
+
         // Flat cable space
         translate([0, 0, cap_display_top_wall])
         rcube([cap_display_wx - cap_display_wall*2 - 8, cap_display_wy - cap_display_wall*4 + 4, cap_display_inner_h+e], r=0.1);
